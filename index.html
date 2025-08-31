@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Booker Drilling Solutions | Well Drilling • Pump • Survey • Installations</title>
+  <meta name="description" content="Booker Drilling Solutions — professional well drilling, well pump services, hydrofracking, and geothermal services. Licensed & insured. Free estimates." />
+
+  <!-- Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet" />
+
+  <style>
+    /* ========== Base / Reset ========== */
+    *, *::before, *::after { box-sizing: border-box; }
+    :root{
+      --blue:#47B2E4;
+      --blue-ink:#003366;
+      --ink:#111;
+      --text:#333;
+      --muted:#666;
+      --bg:#fff;
+      --light:#f7fbff;
+      --radius-lg:18px;
+      --shadow:0 8px 22px rgba(0,0,0,.06);
+    }
+    html, body { height: 100%; scroll-behavior: smooth; }
+    body{
+      margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text); background: var(--bg); line-height: 1.6;
+    }
+    img{max-width:100%; height:auto; display:block;}
+    a{color:inherit; text-decoration:none;}
+    .container{width:min(1200px, 92%); margin-inline:auto;}
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:.6rem;
+      padding:.85rem 1.35rem; font-weight:700; border-radius:999px; border:0; cursor:pointer;
+      background:var(--blue); color:#000; box-shadow: var(--shadow);
+      transition:.2s transform ease, .2s filter ease;
+    }
+    .btn:hover{ transform: translateY(-1px); filter: brightness(1.06); }
+    .btn.outline{ background:#fff; border:2px solid var(--blue); color:var(--ink); }
+    .chip{ display:inline-flex; align-items:center; gap:.45rem; padding:.35rem .75rem; border-radius:999px; background:#eaf6fe; color:#024; font-weight:600; }
+
+    /* ========== Top Bar ========== */
+    .topbar{
+      position:sticky; top:0; z-index:50; background:#fff; border-bottom:1px solid #eee;
+    }
+    .topbar-inner{
+      display:flex; align-items:center; justify-content:space-between; padding:.6rem 0;
+    }
+    .topbar .btn{ padding:.6rem 1rem; }
+    .topbar .phone{ font-weight:800; letter-spacing:.5px; }
+
+     /* ===== Brand ===== */
+header.brand { text-align:center; padding:16px 0 12px }
+.brandbox { display:flex; gap:14px; align-items:center; justify-content:center }
+.brand-logo { height:74px; width:auto }         /* ← main logo sizing */
+.brand-name { font-weight:900; letter-spacing:.4px; color:var(--blue-ink) }
+.brand-tag { color:#083a66; font-weight:700; font-size:.98rem; margin-top:4px }
+
+/* Global image styles that also apply to the logo */
+img,video { max-width:100%; height:auto; border-radius:14px; display:block }
+
+
+    /* ========== Navigation ========== */
+    .nav{
+      background:var(--blue);
+      position:sticky; top:57px; z-index:45;
+      box-shadow:0 4px 12px rgba(0,0,0,.04);
+    }
+    .nav-inner{
+      display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;
+    }
+    .menu{ display:flex; list-style:none; padding:0; margin:0; flex-wrap:wrap; }
+    .menu>li{ position:relative; }
+    .menu>a, .menu>li>a{
+      display:block; padding:14px 18px; font-weight:800; color:#000; border-bottom:2px solid transparent;
+    }
+    .menu>li>a.active, .menu>li>a:hover{ border-bottom-color:#000; }
+
+    /* Dropdown (simple, optional) */
+    .has-sub>a::after{ content:"\f107"; font-family:"Font Awesome 6 Free"; font-weight:900; margin-left:.5rem; }
+    .sub{
+      position:absolute; left:0; top:100%; background:#fff; min-width:220px; border-radius:12px;
+      box-shadow:0 12px 24px rgba(0,0,0,.08); padding:.4rem; display:none;
+    }
+    .sub a{ display:block; padding:.6rem .8rem; border-radius:10px; color:#111; font-weight:600; }
+    .sub a:hover{ background:#f3f9ff; }
+    .has-sub:hover .sub{ display:block; }
+
+    /* Mobile nav */
+    .hamburger{ display:none; border:0; background:transparent; font-size:1.4rem; padding:10px; }
+    @media (max-width: 920px){
+      .nav-inner{ justify-content:space-between; padding-inline:10px; }
+      .hamburger{ display:block; }
+      .menu{ width:100%; flex-direction:column; display:none; }
+      .menu.show{ display:flex; }
+      .menu>li>a{ padding:14px; }
+      .sub{ position:static; box-shadow:none; padding:0; background:transparent; }
+      .sub a{ padding:.6rem 1.2rem; }
+    }
+
+    /* ========== Hero ========== */
+    .hero{
+      position:relative; min-height:64vh; display:grid; place-items:center; text-align:center; color:#fff;
+      background:url('images/hero.jpg') center/cover no-repeat;
+    }
+    .hero::before{
+      content:""; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.55), rgba(0,0,0,.35));
+    }
+    .hero > .container{ position:relative; z-index:2; }
+    .hero h1{
+      font-size: clamp(1.6rem, 3.2vw + 1rem, 2.8rem); margin:0 0 .6rem; letter-spacing:.5px; font-weight:900;
+    }
+    .hero p{ font-size:clamp(.95rem, .7vw + .8rem, 1.15rem); margin:0 0 1rem; }
+    .hero .cta-row{ display:flex; gap:.7rem; flex-wrap:wrap; justify-content:center; margin-top:.6rem; }
+
+    /* ========== Section: Intro Text ========== */
+    section{ padding: clamp(44px, 5vw, 70px) 0; }
+    .section-title{
+      text-align:center; color:var(--blue-ink); font-weight:900;
+      font-size: clamp(1.4rem, 1.6vw + 1rem, 2.1rem); margin:0 0 .65rem;
+    }
+    .section-text{ text-align:center; color:#444; font-size:1.05rem; max-width:900px; margin-inline:auto; }
+
+    /* ========== Alternating Service Blocks ========== */
+    .service{
+      display:grid; grid-template-columns: 1.1fr 1fr; gap:36px; align-items:center;
+    }
+    .service:nth-child(even){ grid-template-columns: 1fr 1.1fr; }
+    .service-img{ border-radius:24px; overflow:hidden; box-shadow: var(--shadow); }
+    .service h3{
+      color:var(--blue-ink); font-size:clamp(1.25rem, 1.2vw + 1rem, 1.8rem); margin:.2rem 0 .5rem; font-weight:900;
+    }
+    .service p{ color:#444; font-size:1.05rem; }
+    .service .btn{ margin-top:14px; }
+    @media (max-width: 900px){
+      .service, .service:nth-child(even){ grid-template-columns:1fr; }
+    }
+
+    /* ========== Features Banner ========== */
+    .features{
+      background:var(--blue); color:#000; text-align:center;
+      border-radius:0; box-shadow:inset 0 1px 0 #c5e9ff;
+    }
+    .features h2{ margin:0 0 18px; font-size: clamp(1.3rem, 1.2vw + 1rem, 1.8rem); }
+    .feature-grid{ display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; }
+    .card{
+      background:#fff; border-radius:16px; padding:22px; box-shadow: var(--shadow); height:100%;
+    }
+    .card i{ font-size:1.9rem; color:var(--blue); }
+    .card h4{ margin:10px 0 6px; font-size:1.1rem; }
+    .card p{ margin:0; color:#555; }
+    @media (max-width: 800px){ .feature-grid{ grid-template-columns:1fr; } }
+
+    /* ========== Contact / Serving / Hours ========== */
+    .contact-band{ background: var(--light); border-top:3px solid #0e74a5; border-bottom:1px solid #d7ebf7; }
+    .contact-grid{
+      display:grid; grid-template-columns: repeat(4, 1fr); gap:26px;
+    }
+    .contact-grid h5{
+      font-size:1rem; letter-spacing:.25px; text-transform:uppercase; color:#0b4b79;
+      border-bottom:2px solid #0b4b79; padding-bottom:.4rem; margin:0 0 .7rem;
+    }
+    .contact-grid p, .contact-grid li{ color:#333; }
+    .split-list{ columns:2; column-gap:18px; }
+    .contact-actions{ display:flex; gap:.6rem; flex-wrap:wrap; }
+    .contact-actions .btn{ background:#fff; border:2px solid #111; color:#111; }
+    .socials a{ margin-right:.6rem; font-size:1.2rem; color:#0b4b79; }
+    @media (max-width: 1000px){ .contact-grid{ grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 640px){ .contact-grid{ grid-template-columns: 1fr; } .split-list{ columns:1; } }
+
+    /* ========== Footer ========== */
+    footer{ background:#0b0b0b; color:#ccc; text-align:center; padding:36px 0; }
+    footer h3{ color:#fff; margin:0 0 8px; }
+    .copyright{ margin-top:14px; font-size:.95rem; }
+
+    /* ========== Right Sticky Action Bar ========== */
+    .actionbar{
+      position:fixed; right:16px; top:40%; translate: 0 -50%;
+      display:flex; flex-direction:column; gap:10px; z-index:60;
+    }
+    .actionbar a{
+      width:46px; height:46px; display:grid; place-items:center; background:#0b66a3; color:#fff;
+      border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,.18); transition:.2s transform ease;
+    }
+    .actionbar a:hover{ transform: translateY(-2px); }
+    @media (max-width: 900px){ .actionbar{ display:none; } }
+
+    /* Utilities */
+    .mb-2{ margin-bottom:.6rem; }
+    .mt-0{ margin-top:0; }
+    .mt-1{ margin-top:.4rem; }
+    .mt-2{ margin-top:.8rem; }
+    .mt-3{ margin-top:1.2rem; }
+  </style>
+</head>
+<body>
+
+  <!-- Top Bar -->
+<div class="topbar">
+  <div class="container topbar-inner">
+    <button class="btn"
+      onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=kelvinekiganga999@gmail.com&su=Inquiry%20from%20Booker%20site&body=Hello%20Booker%20Team,%0A%0A...', '_blank')">
+      <i class="fa-solid fa-pen"></i> Write a message
+    </button>
+
+    <a class="btn outline"
+       href="https://wa.me/254722536867?text=Hello%20Booker%20Investment%20Group%2C%20I%27d%20like%20to%20learn%20more%20about%20your%20services."
+       target="_blank" rel="noopener">
+       <i class="fa-brands fa-whatsapp"></i> WhatsApp
+    </a>
+
+    <button class="btn outline" onclick="window.location='contact.html#visit'">
+      <i class="fa-solid fa-map"></i> Visit Us
+    </button>
+  </div>
+</div>
+
+<!-- Brand -->
+<header class="brand">
+  <div class="container brandbox">
+    <img class="brand-logo" src="images/BKM.png" alt="Booker Investment logo"/>
+    <div>
+      <div class="brand-name">BOOKER INVESTMENT GROUP</div>
+      <div class="brand-tag">Good water makes life better</div>
+    </div>
+  </div>
+</header>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <button class="hamburger" aria-label="Toggle menu" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+    <ul class="menu" id="menu">
+     
+      <li><a class="active" href="#">Our Works</a></li>
+      <li><a href="report.html">Reports</a></li>
+    </ul>
+  </div>
+</nav>
+
+
+  <!-- ===== Hero ===== -->
+  <section class="hero" id="home" aria-label="Hero">
+    <div class="container">
+      <span class="chip"><i class="fa-solid fa-shield"></i> Licensed & Insured </span>
+      <h1 class="mt-1">BOOKER INVESTMENT – DRILLING AND PROFESSIONAL INSTALLATION SERVICES</h1>
+      <p>Free Estimates for Well Drilling • Pump Installations</p> 
+      <div class="cta-row">
+        <a class="btn" href="tel:+254722536867"><i class="fa-solid fa-phone"></i> (254) 7225-36867</a>
+        <a class="btn outline"
+   href="https://wa.me/254722536867?text=Hello%20Booker%20Investment%20Group%2C%20I%27d%20like%20to%20learn%20more%20about%20your%20services."
+   target="_blank" rel="noopener">
+   <i class="fa-solid fa-message"></i> Send WhatsApp Message
+</a>
+
+    </div>
+  </section>
+
+  <!-- ===== Intro Copy ===== -->
+  <section>
+    <div class="container">
+      <h2 class="section-title">We have been around for quite sometime</h2>
+      <p class="section-text">
+       For more than 10 years, we have been at the forefront of well-drilling and groundwater solutions in Kenya. As a locally owned company, we are dedicated to delivering excellence, safety, and reliable service to communities and businesses across the country. Our experienced technicians are fully licensed, insured, and skilled in modern water pressure systems—ensuring every project is completed with expertise, integrity, and care. </p>
+    </div>
+  </section>
+
+  <!-- ===== Services (Alternating) ===== -->
+  <section id="drilling" class="container">
+    <div class="service">
+      <div class="service-img">
+        <img src="images/r2.jpg" alt="Drilling rig operating on site" />
+      </div>
+      <div>
+        <h3>Drilling Services</h3>
+        <p>
+         Booker Drilling Services stands among Kenya’s most trusted water drilling companies. With decades of proven experience, we specialize in providing dependable access to clean and sustainable water for communities, farms, industries, and institutions across the country. Our team combines deep technical expertise with state-of-the-art equipment, ensuring every project meets regulatory standards while exceeding client expectations. At Booker Drilling, we are committed to delivering safe, efficient, and long-lasting groundwater solutions tailored to Kenya’s unique needs.
+        </p>
+        <a class="btn" href="#contact">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="pump" class="container">
+    <div class="service">
+      <div>
+        <h3>Installation Services</h3>
+<p>
+  At Booker Drilling Services, we ensure a reliable water supply through professional pump installations, maintenance, and repairs.  
+  Our skilled technicians diagnose challenges quickly and deliver durable, efficient solutions tailored to Kenya’s diverse water needs.  
+  Whether it’s a new system setup or a replacement, we guarantee quality service that keeps your water flowing without interruption.  
+</p>
+
+        <a class="btn" href="#contact">Learn More</a>
+      </div>
+      <div class="service-img">
+        <img src="images/r8.jpg" alt="Blue pressure tank and pump installation" />
+      </div>
+    </div>
+  </section>
+
+  <section id="hydro" class="container">
+    <div class="service">
+      <div class="service-img">
+        <img src="images/r3.jpg" alt="Hydrofracking equipment in use" />
+      </div>
+      <div>
+        <h3>Hydrological Survey</h3>
+<p>
+  At Booker Drilling Services, we conduct professional hydrological surveys to identify the most suitable sites for water drilling.  
+  Using advanced technology and proven field methods, our experts analyze underground water availability, depth, and quality.  
+  This scientific approach ensures accurate drilling locations, reduces project risks, and guarantees sustainable water solutions  
+  for households, farms, and institutions across Kenya.  
+</p>
+
+        <a class="btn" href="#contact">Learn More</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="geo" class="container">
+    <div class="service">
+      <div>
+       <h3>Maintenance</h3>
+<p>
+  Booker Drilling Services offers reliable pump maintenance to keep your water systems operating at peak performance.  
+  Our technicians provide routine servicing, troubleshooting, and timely repairs to prevent breakdowns and extend the life of your equipment.  
+  With proactive care and expert attention, we ensure a steady, efficient, and dependable water supply for homes, farms, and businesses across Kenya.  
+</p>
+
+         <a class="btn" href="#contact">Learn More</a>
+      </div>
+      <div class="service-img">
+        <img src="images/r10.jpg" alt="Blue pressure tank and pump installation" />
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Feature Banner ===== -->
+  <section class="features" aria-label="Why Choose Us">
+    <div class="container">
+      <h2>Why Choose Booker Investment Group?</h2>
+      <div class="feature-grid">
+        <div class="card">
+          <i class="fa-solid fa-briefcase"></i>
+          <h4>In Oparation since 2009</h4>
+          <p>Decades of trusted regional and county service and expertise.</p>
+        </div>
+        <div class="card">
+          <i class="fa-solid fa-shield-halved"></i>
+          <h4>Licensed & Insured</h4>
+          <p>Compliance with the highest safety standards.</p>
+        </div>
+        <div class="card">
+          <i class="fa-solid fa-award"></i>
+          <h4>Quality Products & Service</h4>
+          <p>Good equipment and workmanship you can rely on.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Contact / Serving Area / Hours ===== -->
+  <section class="contact-band" id="contact">
+    <div class="container contact-grid">
+      <div id="visit">
+        <h5>Visit Us</h5>
+        <p>C2 Kisumu-Busia Rd<br/>Nyamasaria</p>
+        <div class="contact-actions mt-2">
+          <a class="btn" href="https://maps.google.com?q=Nyamasaria+Kisumu" target="_blank" rel="noopener">
+            <i class="fa-solid fa-route"></i> Get Directions
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Serving Area</h5>
+        <ul class="split-list" style="list-style: none; padding-left:0;">
+          <li>All over Kenya</li>
+          
+        </ul>
+      </div>
+
+      <div>
+        <h5>Contact Us</h5>
+        <p class="mb-2"><strong><a href="tel:+17174455573">(254) 7225-36867</a></strong></p>
+        <div class="contact-actions">
+          <a class="btn" href="mailto:info@bookerivestment.com"><i class="fa-solid fa-envelope"></i> Send a Message</a>
+        </div>
+        <div class="socials mt-2" aria-label="Social links">
+          <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+        </div>
+      </div>
+
+      <div>
+        <h5>Business Hours</h5>
+        <p>Mon – Fri <strong>7:00 am – 4:00 pm</strong></p>
+        <p>Sat – Sun <strong>Half day</strong></p>
+       
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer>
+    <h3>Booker Investment</h3>
+    <div>
+      <a href="#" class="chip"><i class="fa-solid fa-droplet"></i> Clean Water Systems</a>
+    </div>
+    <div class="copyright">&copy; <span id="year"></span> Booker Investment. All rights reserved.</div>
+  </footer>
+
+  <!-- ===== Right Sticky Action Bar ===== -->
+  <div class="actionbar" aria-label="Quick actions">
+    <a href="tel:+17174455573" title="Call"><i class="fa-solid fa-phone"></i></a>
+    <a href="#reviews" title="Reviews"><i class="fa-solid fa-star"></i></a>
+    <a href="mailto:info@bookerinvestment.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+    <a href="https://maps.google.com?q=1439+Dry+Tavern+Rd+Denver+PA+17517" target="_blank" rel="noopener" title="Map"><i class="fa-solid fa-location-dot"></i></a>
+    <a href="#" title="Share" onclick="navigator.share && navigator.share({title:document.title, url:location.href}); return false;"><i class="fa-solid fa-share-nodes"></i></a>
+  </div>
+
+  <script>
+    // Current year in footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const menu = document.getElementById('menu');
+    menuBtn.addEventListener('click', () => menu.classList.toggle('show'));
+
+    // Close mobile menu after clicking a link (optional)
+    [...menu.querySelectorAll('a')].forEach(a => a.addEventListener('click', () => {
+      if (menu.classList.contains('show')) menu.classList.remove('show');
+    }));
+  </script>
+</body>
+</html>

@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Booker Investment | Drilling Reports</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+
+<style>
+  /* ===== Base / Theme (matches your bright Projects page) ===== */
+  *,*::before,*::after{box-sizing:border-box}
+  :root{
+    --blue:#1fb6ff;
+    --blue-ink:#002b66;
+    --ink:#0a0a0a;
+    --text:#1e1e1e;
+    --muted:#2f3b4a;
+    --bg:#ffffff;
+    --light:#f1f9ff;
+    --radius:18px;
+    --shadow:0 10px 26px rgba(0,0,0,.10);
+    --border:#dff2ff;
+  }
+  html,body{height:100%}
+  body{
+    margin:0; font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
+    color:var(--text); background:var(--bg); line-height:1.6;
+  }
+  img{max-width:100%;height:auto;display:block}
+  a{color:inherit;text-decoration:none}
+  .container{width:min(1200px,92%);margin-inline:auto}
+  .btn{
+    display:inline-flex;align-items:center;gap:.6rem;
+    padding:.8rem 1.2rem;border-radius:999px;border:0;cursor:pointer;
+    background:var(--blue);color:#001018;font-weight:800;letter-spacing:.2px;
+    box-shadow:var(--shadow);transition:transform .15s ease,filter .15s ease
+  }
+  .btn:hover{transform:translateY(-2px);filter:brightness(1.07)}
+  .btn.outline{background:#fff;border:2px solid var(--blue);color:var(--blue-ink)}
+  .chip{display:inline-flex;align-items:center;gap:.45rem;padding:.35rem .8rem;border-radius:999px;background:#e6f6ff;color:#00395f;font-weight:800}
+
+  /* ===== Top Bar ===== */
+  .topbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:3px solid #e5f3ff}
+  .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:.7rem 0}
+  .topbar .btn{padding:.55rem 1rem}
+  .topbar .place{font-weight:900;color:var(--blue-ink)}
+
+  /* ===== Brand ===== */
+  header.brand{text-align:center;padding:16px 0 12px}
+  .brandbox{display:flex;gap:14px;align-items:center;justify-content:center}
+  .brand-logo{height:74px;width:auto}
+  .brand-name{font-weight:900;letter-spacing:.4px;color:var(--blue-ink)}
+  .brand-tag{color:#083a66;font-weight:700;font-size:.98rem;margin-top:4px}
+
+  /* ===== Nav ===== */
+  .nav{background:var(--blue);position:sticky;top:60px;z-index:45;box-shadow:0 6px 14px rgba(0,0,0,.08)}
+  .nav-inner{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
+  .menu{list-style:none;display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0;padding:0}
+  .menu>li>a{display:block;padding:15px 18px;font-weight:900;color:#001018;border-bottom:3px solid transparent}
+  .menu>li>a:hover,.menu>li>a.active{border-bottom-color:#001018}
+  .hamburger{display:none;border:0;background:transparent;font-size:1.5rem;padding:10px}
+  @media (max-width:920px){
+    .nav-inner{justify-content:space-between;padding-inline:10px}
+    .hamburger{display:block}
+    .menu{width:100%;flex-direction:column;display:none;align-items:stretch}
+    .menu.show{display:flex}
+    .menu>li>a{padding:14px}
+  }
+
+  /* ===== Hero ===== */
+  .hero{
+    position:relative;min-height:36vh;display:grid;place-items:center;text-align:center;color:#001018;
+    background:linear-gradient(0deg,#e6f7ff,transparent 65%), url('images/projects-hero.jpg') center/cover no-repeat;
+    border-bottom:4px solid #bfe9ff;
+  }
+  .hero .container{padding:36px 0}
+  .hero h1{font-size:clamp(1.6rem,3.2vw + 1rem,2.5rem);margin:0;color:#001a3d;font-weight:1000}
+  .hero p{margin:.25rem 0 0;color:#032a52;font-weight:700}
+
+  /* ===== Main Layout: Form + Preview ===== */
+  section{padding:clamp(36px,4vw,60px) 0}
+  .grid-2{
+    display:grid;gap:22px;
+    grid-template-columns:1fr 1.1fr;
+  }
+  @media (max-width:1000px){ .grid-2{grid-template-columns:1fr} }
+
+  /* Left: Report Form */
+  .panel{
+    border:3px solid var(--border);border-radius:16px;padding:18px;background:#fff;box-shadow:var(--shadow)
+  }
+  .panel h2{margin:0 0 10px;color:#001a3d}
+  .fieldset{border:2px solid var(--border);border-radius:12px;padding:14px;margin-top:14px}
+  .legend{font-weight:900;color:#0c355a;margin-bottom:8px}
+  .row{display:grid;gap:12px;grid-template-columns:1fr 1fr}
+  .row-3{display:grid;gap:12px;grid-template-columns:repeat(3,1fr)}
+  .row-1{display:grid;gap:12px;grid-template-columns:1fr}
+  @media (max-width:720px){ .row,.row-3{grid-template-columns:1fr} }
+  label{font-weight:800;color:#0c355a;font-size:.95rem}
+  input,textarea,select{
+    width:100%;padding:.7rem .75rem;border:2px solid #cfe9ff;border-radius:10px;
+    font:inherit;background:#fff
+  }
+  textarea{min-height:90px;resize:vertical}
+
+  .lith-table{width:100%;border-collapse:collapse;margin-top:10px}
+  .lith-table th,.lith-table td{border:2px solid #cfe9ff;padding:.55rem .6rem;text-align:left}
+  .lith-table th{background:#eaf7ff;color:#043a64}
+  .table-actions{display:flex;gap:8px;margin-top:10px}
+
+  /* Right: Print Preview (the actual report) */
+  .report{
+    border:3px solid var(--border);border-radius:16px;background:#fff;box-shadow:var(--shadow);
+    padding:0;overflow:hidden
+  }
+  .report-header{
+    display:flex;gap:14px;align-items:center;border-bottom:3px solid var(--border);padding:16px;
+    background:linear-gradient(180deg,#f4fbff,#ffffff)
+  }
+  .report-header img{height:58px;width:auto}
+  .report-title{font-weight:900;color:#001a3d;margin:0}
+  .report-meta{color:#0c355a;font-weight:700}
+
+  .report-body{padding:18px}
+  .rep-grid{display:grid;gap:16px;grid-template-columns:1fr 1fr}
+  @media (max-width:900px){ .rep-grid{grid-template-columns:1fr} }
+  .rep-card{border:2px solid #cfe9ff;border-radius:12px;padding:12px}
+  .rep-card h3{margin:.1rem 0 .35rem;color:#0c355a;font-size:1.05rem}
+  .rep-card p{margin:.1rem 0}
+  .rep-table{width:100%;border-collapse:collapse;margin-top:6px}
+  .rep-table th,.rep-table td{border:2px solid #cfe9ff;padding:.5rem}
+  .rep-table th{background:#eaf7ff;color:#043a64}
+
+  .report-footer{border-top:3px solid var(--border);padding:14px 18px;background:#f8fdff;color:#043a64;font-weight:700;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+
+  .actions-top{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .muted{color:var(--muted)}
+
+  /* ===== Footer (from Our Works page) ===== */
+  footer{ background:#0b0b0b; color:#ccc; text-align:center; padding:36px 0; }
+  footer h3{ color:#fff; margin:0 0 8px; }
+  .copyright{ margin-top:14px; font-size:.95rem; }
+
+  /* ===== Print Styles (print only the report) ===== */
+  @media print{
+    body{background:#fff}
+    .topbar, .brand, .nav, .hero, .panel, .actionbar, footer{display:none !important}
+    section{padding:0}
+    .report{border:0;box-shadow:none}
+    .report-header{border-bottom:2px solid #000}
+    .report-footer{border-top:2px solid #000}
+    .report-body{padding:14px}
+    @page{margin:16mm}
+  }
+
+  /* ===== Sticky Action Bar ===== */
+  .actionbar{position:fixed;right:16px;top:42%;translate:0 -50%;display:flex;flex-direction:column;gap:10px;z-index:60}
+  .actionbar a{
+    width:48px;height:48px;display:grid;place-items:center;background:#007ad6;color:#fff;
+    border-radius:12px;box-shadow:0 10px 22px rgba(0,0,0,.2);transition:transform .15s ease,filter .15s ease
+  }
+  .actionbar a:hover{transform:translateY(-2px);filter:brightness(1.1)}
+  @media (max-width:900px){.actionbar{display:none}}
+</style>
+</head>
+<body>
+
+<!-- Top Bar -->
+<div class="topbar">
+  <div class="container topbar-inner">
+    <button class="btn"
+      onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=kelvinekiganga999@gmail.com&su=Inquiry%20from%20Booker%20site&body=Hello%20Booker%20Team,%0A%0A...', '_blank')">
+      <i class="fa-solid fa-pen"></i> Write a message
+    </button>
+
+    <a class="btn outline"
+       href="https://wa.me/254722536867?text=Hello%20Booker%20Investment%20Group%2C%20I%27d%20like%20to%20learn%20more%20about%20your%20services."
+       target="_blank" rel="noopener">
+       <i class="fa-brands fa-whatsapp"></i> WhatsApp
+    </a>
+
+    <button class="btn outline" onclick="window.location='contact.html#visit'">
+      <i class="fa-solid fa-map"></i> Visit Us
+    </button>
+  </div>
+</div>
+
+<!-- Brand -->
+<header class="brand">
+  <div class="container brandbox">
+    <img class="brand-logo" src="images/BKM.png" alt="Booker Investment logo"/>
+    <div>
+      <div class="brand-name">BOOKER INVESTMENT GROUP</div>
+      <div class="brand-tag">Good water makes life better</div>
+    </div>
+  </div>
+</header>
+
+<!-- Nav -->
+<nav class="nav">
+  <div class="container nav-inner">
+    <button class="hamburger" aria-label="Toggle menu" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
+    <ul class="menu" id="menu">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="project.html">Our Work</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Hero -->
+<section class="hero" aria-label="Reports hero">
+  <div class="container">
+    <span class="chip"><i class="fa-solid fa-file-pdf"></i> Drilling Reports</span>
+    <h1>Generate Professional Drilling Reports (PDF)</h1>
+    <p>Fill the form, preview instantly, and print to PDF.</p>
+  </div>
+</section>
+
+<!-- Main: Form + Preview -->
+<section>
+  <div class="container grid-2">
+
+    <!-- LEFT: REPORT FORM -->
+    <div class="panel" id="formPanel">
+      <h2>Report Builder</h2>
+      <div class="actions-top">
+        <button class="btn" id="btnGenerate"><i class="fa-solid fa-print"></i> Generate PDF</button>
+        <button class="btn outline" id="btnReset"><i class="fa-solid fa-undo"></i> Reset</button>
+      </div>
+
+      <!-- Header -->
+      <div class="fieldset">
+        <div class="legend">Header</div>
+        <div class="row">
+          <div>
+            <label>Report Title</label>
+            <input id="title" placeholder="Drilling Completion Report"/>
+          </div>
+          <div>
+            <label>Report No.</label>
+            <input id="reportNo" placeholder="BDS-2025-001"/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Date</label>
+            <input id="date" type="date"/>
+          </div>
+          <div>
+            <label>Prepared By</label>
+            <input id="preparedBy" placeholder="Engineer / Hydrogeologist"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Client & Site -->
+      <div class="fieldset">
+        <div class="legend">Client & Site</div>
+        <div class="row">
+          <div>
+            <label>Client Name</label>
+            <input id="client" placeholder="Client / Organization"/>
+          </div>
+          <div>
+            <label>Contact (optional)</label>
+            <input id="clientContact" placeholder="+254 ... / email"/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Site / Project</label>
+            <input id="site" placeholder="Site name / Project"/>
+          </div>
+          <div>
+            <label>Location</label>
+            <input id="location" placeholder="County / Town"/>
+          </div>
+        </div>
+        <div class="row-3">
+          <div>
+            <label>Latitude</label>
+            <input id="lat" placeholder="-0.12345"/>
+          </div>
+          <div>
+            <label>Longitude</label>
+            <input id="lng" placeholder="34.56789"/>
+          </div>
+          <div>
+            <label>Elevation (m)</label>
+            <input id="elev" placeholder="1234"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Borehole Specs -->
+      <div class="fieldset">
+        <div class="legend">Borehole Specs</div>
+        <div class="row-3">
+          <div>
+            <label>Total Depth (m)</label>
+            <input id="depth" placeholder="150"/>
+          </div>
+          <div>
+            <label>Diameter (mm)</label>
+            <input id="diameter" placeholder="254"/>
+          </div>
+          <div>
+            <label>Static Water Level (m)</label>
+            <input id="swl" placeholder="35"/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Casing</label>
+            <input id="casing" placeholder="PVC 8&quot; to 120m"/>
+          </div>
+          <div>
+            <label>Screens</label>
+            <input id="screens" placeholder="Stainless 0.75mm slots 120–150m"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lithology Log -->
+      <div class="fieldset">
+        <div class="legend">Lithology Log</div>
+        <table class="lith-table" id="lithTable">
+          <thead>
+            <tr>
+              <th>From (m)</th>
+              <th>To (m)</th>
+              <th>Description</th>
+              <th>Notes</th>
+              <th>—</th>
+            </tr>
+          </thead>
+          <tbody id="lithBody">
+            <tr>
+              <td><input placeholder="0"/></td>
+              <td><input placeholder="5"/></td>
+              <td><input placeholder="Topsoil / Sandy silt"/></td>
+              <td><input placeholder="Brown"/></td>
+              <td><button class="btn outline btnRowDel" type="button">Remove</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="table-actions">
+          <button class="btn" id="btnRowAdd" type="button"><i class="fa-solid fa-plus"></i> Add Row</button>
+        </div>
+      </div>
+
+      <!-- Testing & Pump -->
+      <div class="fieldset">
+        <div class="legend">Testing & Pump</div>
+        <div class="row">
+          <div>
+            <label>Test Pumping</label>
+            <input id="test" placeholder="24-hr test @ 10 m³/hr, drawdown 8m"/>
+          </div>
+          <div>
+            <label>Yield (m³/hr)</label>
+            <input id="yield" placeholder="12"/>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label>Pump Model</label>
+            <input id="pump" placeholder="Submersible 7.5 kW"/>
+          </div>
+          <div>
+            <label>Installation Depth (m)</label>
+            <input id="pumpDepth" placeholder="90"/>
+          </div>
+        </div>
+      </div>
+
+      <!-- Water Quality & Notes -->
+      <div class="fieldset">
+        <div class="legend">Water Quality & Notes</div>
+        <div class="row">
+          <div>
+            <label>Water Quality (summary)</label>
+            <input id="quality" placeholder="EC 650 µS/cm, pH 7.3, Fe 0.2 mg/L"/>
+          </div>
+          <div>
+            <label>Disinfection</label>
+            <input id="disinf" placeholder="Chlorination @ 50 mg/L for 12 hrs"/>
+          </div>
+        </div>
+        <div class="row-1">
+          <div>
+            <label>Notes</label>
+            <textarea id="notes" placeholder="Additional observations, recommendations..."></textarea>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT: REPORT PREVIEW -->
+    <div class="report" id="report">
+      <div class="report-header">
+        <img src="images/BKM.png" alt="Logo"/>
+        <div>
+          <h2 class="report-title" id="out_title">Drilling Completion Report</h2>
+          <div class="report-meta">
+            <span id="out_reportNo">Report No.: —</span> ·
+            <span id="out_date">Date: —</span> ·
+            <span id="out_prepared">Prepared by: —</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-body">
+        <div class="rep-grid">
+          <div class="rep-card">
+            <h3>Client & Site</h3>
+            <p><strong>Client:</strong> <span id="out_client">—</span></p>
+            <p class="muted"><span id="out_clientContact"></span></p>
+            <p><strong>Site:</strong> <span id="out_site">—</span></p>
+            <p><strong>Location:</strong> <span id="out_location">—</span></p>
+            <p><strong>Lat/Lng/Elev:</strong>
+              <span id="out_lat">—</span>,
+              <span id="out_lng">—</span>,
+              <span id="out_elev">—</span> m
+            </p>
+          </div>
+
+          <div class="rep-card">
+            <h3>Borehole Specifications</h3>
+            <table class="rep-table">
+              <tbody>
+                <tr><th>Total Depth</th><td><span id="out_depth">—</span> m</td></tr>
+                <tr><th>Diameter</th><td><span id="out_diameter">—</span> mm</td></tr>
+                <tr><th>Static Water Level</th><td><span id="out_swl">—</span> m</td></tr>
+                <tr><th>Casing</th><td id="out_casing">—</td></tr>
+                <tr><th>Screens</th><td id="out_screens">—</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="rep-card" style="margin-top:12px">
+          <h3>Lithology Log</h3>
+          <table class="rep-table" id="out_lithTable">
+            <thead>
+              <tr><th>From (m)</th><th>To (m)</th><th>Description</th><th>Notes</th></tr>
+            </thead>
+            <tbody><!-- rows injected --></tbody>
+          </table>
+        </div>
+
+        <div class="rep-grid" style="margin-top:12px">
+          <div class="rep-card">
+            <h3>Testing & Yield</h3>
+            <p><strong>Test:</strong> <span id="out_test">—</span></p>
+            <p><strong>Yield:</strong> <span id="out_yield">—</span> m³/hr</p>
+          </div>
+
+          <div class="rep-card">
+            <h3>Pump & Installation</h3>
+            <p><strong>Model:</strong> <span id="out_pump">—</span></p>
+            <p><strong>Installation Depth:</strong> <span id="out_pumpDepth">—</span> m</p>
+          </div>
+        </div>
+
+        <div class="rep-grid" style="margin-top:12px">
+          <div class="rep-card">
+            <h3>Water Quality</h3>
+            <p><strong>Summary:</strong> <span id="out_quality">—</span></p>
+            <p><strong>Disinfection:</strong> <span id="out_disinf">—</span></p>
+          </div>
+          <div class="rep-card">
+            <h3>Notes</h3>
+            <p id="out_notes" style="white-space:pre-wrap">—</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-footer">
+        <div>Booker Investment Group Ltd — Professional Drilling & Installations</div>
+        <div>Contact: <strong>+254 722 536 867</strong> · Kisumu</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== Footer (inserted) ===== -->
+<footer>
+  <h3>Booker Investment</h3>
+  <div>
+    <a href="#" class="chip"><i class="fa-solid fa-droplet"></i> Clean Water Systems</a>
+  </div>
+  <div class="copyright">&copy; <span id="year"></span> Booker Investment. All rights reserved.</div>
+</footer>
+
+<!-- Sticky Action Bar -->
+<div class="actionbar" aria-label="Quick actions">
+  <a href="tel:+254722536867" title="Call"><i class="fa-solid fa-phone"></i></a>
+  <a href="mailto:info@bookerinvestment.com" title="Email"><i class="fa-solid fa-envelope"></i></a>
+  <a href="https://maps.google.com?q=Nyamasaria+Kisumu" target="_blank" rel="noopener" title="Map"><i class="fa-solid fa-location-dot"></i></a>
+  <a href="#" title="Share" onclick="navigator.share && navigator.share({title:document.title,url:location.href});return false;"><i class="fa-solid fa-share-nodes"></i></a>
+</div>
+
+<script>
+  // Current year in footer
+  const yearEl = document.getElementById('year');
+  if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+  // Mobile menu
+  const menuBtn=document.getElementById('menuBtn');
+  const menu=document.getElementById('menu');
+  if(menuBtn){
+    menuBtn.addEventListener('click',()=>menu.classList.toggle('show'));
+    menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('show')));
+  }
+
+  // Elements map (input -> output)
+  const map = [
+    ['title','out_title'],['reportNo','out_reportNo','Report No.: {v}'],
+    ['date','out_date','Date: {v}'],['preparedBy','out_prepared','Prepared by: {v}'],
+    ['client','out_client'],['clientContact','out_clientContact'],
+    ['site','out_site'],['location','out_location'],
+    ['lat','out_lat'],['lng','out_lng'],['elev','out_elev'],
+    ['depth','out_depth'],['diameter','out_diameter'],['swl','out_swl'],
+    ['casing','out_casing'],['screens','out_screens'],
+    ['test','out_test'],['yield','out_yield'],
+    ['pump','out_pump'],['pumpDepth','out_pumpDepth'],
+    ['quality','out_quality'],['disinf','out_disinf'],['notes','out_notes']
+  ];
+
+  function bindLive() {
+    map.forEach(([inp, out, fmt]) => {
+      const i = document.getElementById(inp);
+      const o = document.getElementById(out);
+      if(!i || !o) return;
+      const update = () => {
+        const v = i.value && i.value.trim() ? i.value.trim() : '—';
+        o.textContent = fmt ? fmt.replace('{v}', v) : v;
+      };
+      i.addEventListener('input', update);
+      update();
+    });
+  }
+  bindLive();
+
+  // Lithology add/remove + render to preview
+  const lithBody = document.getElementById('lithBody');
+  const outLithBody = document.querySelector('#out_lithTable tbody');
+  const btnRowAdd = document.getElementById('btnRowAdd');
+
+  function renderLithPreview(){
+    outLithBody.innerHTML = '';
+    [...lithBody.querySelectorAll('tr')].forEach(tr=>{
+      const tds = tr.querySelectorAll('td input');
+      const row = document.createElement('tr');
+      for(let i=0;i<4;i++){
+        const td = document.createElement('td');
+        td.textContent = (tds[i]?.value || '').trim() || '—';
+        row.appendChild(td);
+      }
+      outLithBody.appendChild(row);
+    });
+  }
+
+  function addRow(){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input placeholder="from"/></td>
+      <td><input placeholder="to"/></td>
+      <td><input placeholder="description"/></td>
+      <td><input placeholder="notes"/></td>
+      <td><button class="btn outline btnRowDel" type="button">Remove</button></td>
+    `;
+    lithBody.appendChild(tr);
+    attachRowEvents(tr);
+    renderLithPreview();
+  }
+
+  function attachRowEvents(tr){
+    tr.querySelectorAll('input').forEach(inp => inp.addEventListener('input', renderLithPreview));
+    const del = tr.querySelector('.btnRowDel');
+    del.addEventListener('click', ()=>{
+      tr.remove();
+      renderLithPreview();
+    });
+  }
+  // attach to initial rows
+  lithBody.querySelectorAll('tr').forEach(attachRowEvents);
+  btnRowAdd.addEventListener('click', addRow);
+  renderLithPreview();
+
+  // Generate PDF (print only the report)
+  document.getElementById('btnGenerate').addEventListener('click', ()=>{
+    renderLithPreview(); // ensure preview is up-to-date
+    window.print();
+  });
+
+  // Reset form
+  document.getElementById('btnReset').addEventListener('click', ()=>{
+    if(!confirm('Clear all fields?')) return;
+    document.querySelectorAll('#formPanel input, #formPanel textarea').forEach(el=>el.value='');
+    lithBody.innerHTML = '';
+    addRow();
+    bindLive();
+    renderLithPreview();
+  });
+</script>
+</body>
+</html>
