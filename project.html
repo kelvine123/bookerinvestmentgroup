@@ -1,389 +1,745 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Booker Investment | Projects</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet"/>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Booker Investment | Projects</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      rel="stylesheet"
+    />
 
-<style>
-  /* ===== Base / Theme (bright, high-contrast) ===== */
-  *,*::before,*::after{box-sizing:border-box}
-  :root{
-    --blue:#1fb6ff;         /* brighter */
-    --blue-ink:#002b66;     /* deep navy for text */
-    --ink:#0a0a0a;          /* true dark text */
-    --text:#1e1e1e;
-    --muted:#2f3b4a;        /* not gray—still readable */
-    --bg:#ffffff;
-    --light:#f1f9ff;        /* vivid light */
-    --radius:18px;
-    --shadow:0 10px 26px rgba(0,0,0,.10);
-  }
-  html,body{height:100%}
-  body{
-    margin:0; font-family:system-ui,Segoe UI,Roboto,Arial,sans-serif;
-    color:var(--text); background:var(--bg); line-height:1.6;
-  }
-  img,video{max-width:100%;height:auto;border-radius:14px;display:block}
-  a{color:inherit;text-decoration:none}
-  .container{width:min(1200px,92%);margin-inline:auto}
+    <style>
+      /* ===== Base / Theme (bright, high-contrast) ===== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      :root {
+        --blue: #1fb6ff; /* brighter */
+        --blue-ink: #002b66; /* deep navy for text */
+        --ink: #0a0a0a; /* true dark text */
+        --text: #1e1e1e;
+        --muted: #2f3b4a; /* not gray—still readable */
+        --bg: #ffffff;
+        --light: #f1f9ff; /* vivid light */
+        --radius: 18px;
+        --shadow: 0 10px 26px rgba(0, 0, 0, 0.1);
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, Segoe UI, Roboto, Arial, sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.6;
+      }
+      img,
+      video {
+        max-width: 100%;
+        height: auto;
+        border-radius: 14px;
+        display: block;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .container {
+        width: min(1200px, 92%);
+        margin-inline: auto;
+      }
 
-  .btn{
-    display:inline-flex;align-items:center;gap:.6rem;
-    padding:.9rem 1.35rem;border-radius:999px;border:0;cursor:pointer;
-    background:var(--blue);color:#001018;font-weight:800;letter-spacing:.2px;
-    box-shadow:var(--shadow);transform:translateZ(0);transition:transform .15s ease,filter .15s ease
-  }
-  .btn:hover{transform:translateY(-2px);filter:brightness(1.07)}
-  .btn.outline{background:#fff;border:2px solid var(--blue);color:var(--blue-ink)}
-  .chip{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem .85rem;border-radius:999px;background:#e6f6ff;color:#00395f;font-weight:800}
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.6rem;
+        padding: 0.9rem 1.35rem;
+        border-radius: 999px;
+        border: 0;
+        cursor: pointer;
+        background: var(--blue);
+        color: #001018;
+        font-weight: 800;
+        letter-spacing: 0.2px;
+        box-shadow: var(--shadow);
+        transform: translateZ(0);
+        transition: transform 0.15s ease, filter 0.15s ease;
+      }
+      .btn:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.07);
+      }
+      .btn.outline {
+        background: #fff;
+        border: 2px solid var(--blue);
+        color: var(--blue-ink);
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.4rem 0.85rem;
+        border-radius: 999px;
+        background: #e6f6ff;
+        color: #00395f;
+        font-weight: 800;
+      }
 
-  /* ===== Top Bar ===== */
-  .topbar{position:sticky;top:0;z-index:50;background:#fff;border-bottom:3px solid #e5f3ff}
-  .topbar-inner{display:flex;align-items:center;justify-content:space-between;padding:.7rem 0}
-  .topbar .btn{padding:.6rem 1rem}
-  .topbar .phone{font-weight:900;color:var(--blue-ink)}
+      /* ===== Top Bar ===== */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: #fff;
+        border-bottom: 3px solid #e5f3ff;
+      }
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.7rem 0;
+      }
+      .topbar .btn {
+        padding: 0.6rem 1rem;
+      }
+      .topbar .phone {
+        font-weight: 900;
+        color: var(--blue-ink);
+      }
 
-  /* ===== Brand ===== */
-  header.brand{text-align:center;padding:16px 0 12px}
-  .brandbox{display:flex;gap:14px;align-items:center;justify-content:center}
-  .brand-logo{height:74px;width:auto}
-  .brand-name{font-weight:900;letter-spacing:.4px;color:var(--blue-ink)}
-  .brand-tag{color:#083a66;font-weight:700;font-size:.98rem;margin-top:4px}
+      /* ===== Brand ===== */
+      header.brand {
+        text-align: center;
+        padding: 16px 0 12px;
+      }
+      .brandbox {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        justify-content: center;
+      }
+      .brand-logo {
+        height: 74px;
+        width: auto;
+      }
+      .brand-name {
+        font-weight: 900;
+        letter-spacing: 0.4px;
+        color: var(--blue-ink);
+      }
+      .brand-tag {
+        color: #083a66;
+        font-weight: 700;
+        font-size: 0.98rem;
+        margin-top: 4px;
+      }
 
-  /* ===== Nav ===== */
-  .nav{background:var(--blue);position:sticky;top:60px;z-index:45;box-shadow:0 6px 14px rgba(0,0,0,.08)}
-  .nav-inner{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap}
-  .menu{list-style:none;display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:0;padding:0}
-  .menu>li>a{display:block;padding:15px 18px;font-weight:900;color:#001018;border-bottom:3px solid transparent}
-  .menu>li>a:hover,.menu>li>a.active{border-bottom-color:#001018}
+      /* ===== Nav ===== */
+      .nav {
+        background: var(--blue);
+        position: sticky;
+        top: 60px;
+        z-index: 45;
+        box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .menu {
+        list-style: none;
+        display: flex;
+        gap: 6px;
+        flex-wrap: wrap;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+      }
+      .menu > li > a {
+        display: block;
+        padding: 15px 18px;
+        font-weight: 900;
+        color: #001018;
+        border-bottom: 3px solid transparent;
+      }
+      .menu > li > a:hover,
+      .menu > li > a.active {
+        border-bottom-color: #001018;
+      }
 
-  .hamburger{display:none;border:0;background:transparent;font-size:1.5rem;padding:10px}
-  @media (max-width:920px){
-    .nav-inner{justify-content:space-between;padding-inline:10px}
-    .hamburger{display:block}
-    .menu{width:100%;flex-direction:column;display:none;align-items:stretch}
-    .menu.show{display:flex}
-    .menu>li>a{padding:14px}
-  }
+      .hamburger {
+        display: none;
+        border: 0;
+        background: transparent;
+        font-size: 1.5rem;
+        padding: 10px;
+      }
+      @media (max-width: 920px) {
+        .nav-inner {
+          justify-content: space-between;
+          padding-inline: 10px;
+        }
+        .hamburger {
+          display: block;
+        }
+        .menu {
+          width: 100%;
+          flex-direction: column;
+          display: none;
+          align-items: stretch;
+        }
+        .menu.show {
+          display: flex;
+        }
+        .menu > li > a {
+          padding: 14px;
+        }
+      }
 
-  /* ===== Hero (no dim overlay) ===== */
-  .hero{
-    position:relative;min-height:52vh;display:grid;place-items:center;text-align:center;color:#001018;
-    background:linear-gradient(0deg,#e6f7ff,transparent 65%), url('images/projects-hero.jpg') center/cover no-repeat;
-    border-bottom:4px solid #bfe9ff;
-  }
-  .hero .container{padding:44px 0}
-  .hero h1{font-size:clamp(1.7rem,3.4vw + 1rem,2.7rem);margin:0 0 .5rem;letter-spacing:.4px;font-weight:1000;color:#001a3d}
-  .hero p{font-size:clamp(1rem,.8vw + .9rem,1.2rem);margin:.2rem 0 1rem;color:#032a52;font-weight:700}
-  .hero .cta-row{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;margin-top:.4rem}
+      /* ===== Hero (no dim overlay) ===== */
+      .hero {
+        position: relative;
+        min-height: 52vh;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        color: #001018;
+        background: linear-gradient(0deg, #e6f7ff, transparent 65%),
+          url("images/projects-hero.jpg") center/cover no-repeat;
+        border-bottom: 4px solid #bfe9ff;
+      }
+      .hero .container {
+        padding: 44px 0;
+      }
+      .hero h1 {
+        font-size: clamp(1.7rem, 3.4vw + 1rem, 2.7rem);
+        margin: 0 0 0.5rem;
+        letter-spacing: 0.4px;
+        font-weight: 1000;
+        color: #001a3d;
+      }
+      .hero p {
+        font-size: clamp(1rem, 0.8vw + 0.9rem, 1.2rem);
+        margin: 0.2rem 0 1rem;
+        color: #032a52;
+        font-weight: 700;
+      }
+      .hero .cta-row {
+        display: flex;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-top: 0.4rem;
+      }
 
-  /* ===== Filters ===== */
-  section{padding:clamp(44px,5vw,70px) 0}
-  .filters{padding:22px 0 8px;background:#fff}
-  .filter-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
-  .chip.active,.chip:hover{background:var(--blue);color:#001018}
+      /* ===== Filters ===== */
+      section {
+        padding: clamp(44px, 5vw, 70px) 0;
+      }
+      .filters {
+        padding: 22px 0 8px;
+        background: #fff;
+      }
+      .filter-row {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .chip.active,
+      .chip:hover {
+        background: var(--blue);
+        color: #001018;
+      }
 
-  /* ===== Projects Grid ===== */
-  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:20px}
-  .card{
-    grid-column:span 12;background:#fff;border:3px solid #dff2ff;border-radius:var(--radius);
-    overflow:hidden;box-shadow:var(--shadow);transition:transform .18s ease,box-shadow .18s ease
-  }
-  .card:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.12)}
-  .media{aspect-ratio:16/9;background:#dff2ff}
-  .body{padding:16px 18px 20px}
-  .meta{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px;align-items:center}
-  .meta .tag{background:#ccf0ff;color:#004a73;padding:6px 12px;border-radius:999px;font-weight:900}
-  .meta .loc{color:#0c355a;font-weight:800}
-  .body h3{margin:6px 0 6px;font-size:1.22rem;color:#001a3d}
-  .body p{margin:0 0 10px;color:#082942}
-  .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+      /* ===== Projects Grid ===== */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(12, 1fr);
+        gap: 20px;
+      }
+      .card {
+        grid-column: span 12;
+        background: #fff;
+        border: 3px solid #dff2ff;
+        border-radius: var(--radius);
+        overflow: hidden;
+        box-shadow: var(--shadow);
+        transition: transform 0.18s ease, box-shadow 0.18s ease;
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+      }
+      .media {
+        aspect-ratio: 16/9;
+        background: #dff2ff;
+      }
+      .body {
+        padding: 16px 18px 20px;
+      }
+      .meta {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-bottom: 8px;
+        align-items: center;
+      }
+      .meta .tag {
+        background: #ccf0ff;
+        color: #004a73;
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-weight: 900;
+      }
+      .meta .loc {
+        color: #0c355a;
+        font-weight: 800;
+      }
+      .body h3 {
+        margin: 6px 0 6px;
+        font-size: 1.22rem;
+        color: #001a3d;
+      }
+      .body p {
+        margin: 0 0 10px;
+        color: #082942;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 6px;
+      }
 
-  @media (min-width:680px){.card{grid-column:span 6}}
-  @media (min-width:1024px){.card{grid-column:span 4}}
+      @media (min-width: 680px) {
+        .card {
+          grid-column: span 6;
+        }
+      }
+      @media (min-width: 1024px) {
+        .card {
+          grid-column: span 4;
+        }
+      }
 
-  /* ===== Feature band ===== */
-  .highlight{background:var(--light);border-top:4px solid #9fe0ff;border-bottom:4px solid #9fe0ff}
-  .highlight .wrap{display:grid;gap:22px}
-  @media (min-width:900px){.highlight .wrap{grid-template-columns:1.1fr .9fr;align-items:center}}
-  .highlight h2{color:var(--blue-ink);margin:0 0 8px}
-  .highlight p{color:#032a52;margin:0 0 10px;font-weight:600}
+      /* ===== Feature band ===== */
+      .highlight {
+        background: var(--light);
+        border-top: 4px solid #9fe0ff;
+        border-bottom: 4px solid #9fe0ff;
+      }
+      .highlight .wrap {
+        display: grid;
+        gap: 22px;
+      }
+      @media (min-width: 900px) {
+        .highlight .wrap {
+          grid-template-columns: 1.1fr 0.9fr;
+          align-items: center;
+        }
+      }
+      .highlight h2 {
+        color: var(--blue-ink);
+        margin: 0 0 8px;
+      }
+      .highlight p {
+        color: #032a52;
+        margin: 0 0 10px;
+        font-weight: 600;
+      }
 
-  /* ===== Footer ===== */
-  footer{background:#001423;color:#d2eeff;text-align:center;padding:38px 0;margin-top:40px;border-top:6px solid #1fb6ff}
-  footer h3{color:#ffffff;margin:0 0 10px}
-  .copyright{margin-top:14px;font-size:1rem;color:#b9e6ff}
+      /* ===== Footer ===== */
+      footer {
+        background: #001423;
+        color: #d2eeff;
+        text-align: center;
+        padding: 38px 0;
+        margin-top: 40px;
+        border-top: 6px solid #1fb6ff;
+      }
+      footer h3 {
+        color: #ffffff;
+        margin: 0 0 10px;
+      }
+      .copyright {
+        margin-top: 14px;
+        font-size: 1rem;
+        color: #b9e6ff;
+      }
 
-  /* ===== Sticky Action Bar ===== */
-  .actionbar{position:fixed;right:16px;top:42%;translate:0 -50%;display:flex;flex-direction:column;gap:10px;z-index:60}
-  .actionbar a{
-    width:48px;height:48px;display:grid;place-items:center;background:#007ad6;color:#fff;
-    border-radius:12px;box-shadow:0 10px 22px rgba(0,0,0,.2);transition:transform .15s ease,filter .15s ease
-  }
-  .actionbar a:hover{transform:translateY(-2px);filter:brightness(1.1)}
-  @media (max-width:900px){.actionbar{display:none}}
-</style>
-</head>
-<body>
+      /* ===== Sticky Action Bar ===== */
+      .actionbar {
+        position: fixed;
+        right: 16px;
+        top: 42%;
+        translate: 0 -50%;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 60;
+      }
+      .actionbar a {
+        width: 48px;
+        height: 48px;
+        display: grid;
+        place-items: center;
+        background: #007ad6;
+        color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.2);
+        transition: transform 0.15s ease, filter 0.15s ease;
+      }
+      .actionbar a:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.1);
+      }
+      @media (max-width: 900px) {
+        .actionbar {
+          display: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <button
+          class="btn"
+          onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=kelvinekiganga999@gmail.com&su=Inquiry%20from%20Booker%20site&body=Hello%20Booker%20Team,%0A%0A...', '_blank')"
+        >
+          <i class="fa-solid fa-pen"></i> Write a message
+        </button>
 
-<!-- Top Bar -->
-<div class="topbar">
-  <div class="container topbar-inner">
-    <button class="btn"
-      onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=kelvinekiganga999@gmail.com&su=Inquiry%20from%20Booker%20site&body=Hello%20Booker%20Team,%0A%0A...', '_blank')">
-      <i class="fa-solid fa-pen"></i> Write a message
-    </button>
+        <a
+          class="btn outline"
+          href="https://wa.me/254722536867?text=Hello%20Booker%20Investment%20Group%2C%20I%27d%20like%20to%20learn%20more%20about%20your%20services."
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fa-brands fa-whatsapp"></i> WhatsApp
+        </a>
 
-    <a class="btn outline"
-       href="https://wa.me/254722536867?text=Hello%20Booker%20Investment%20Group%2C%20I%27d%20like%20to%20learn%20more%20about%20your%20services."
-       target="_blank" rel="noopener">
-       <i class="fa-brands fa-whatsapp"></i> WhatsApp
-    </a>
-
-     <button class="btn outline"
-  onclick="window.open('https://maps.google.com/?q=Shell+Petrol+Station+Nyamasaria%2C+Kisumu','_blank','noopener')">
-  <i class="fa-solid fa-map"></i> Visit Us
-    </button>
-  </div>
-</div>
-
-
-<!-- Brand -->
-<header class="brand">
-  <div class="container brandbox">
-    <img class="brand-logo" src="images/BKM.png" alt="Booker Investment logo"/>
-    <div>
-      <div class="brand-name">BOOKER INVESTMENT GROUP Ltd</div>
-      <div class="brand-tag">Good water makes life better</div>
-    </div>
-  </div>
-</header>
-
-<!-- Nav -->
-<nav class="nav">
-  <div class="container nav-inner">
-    <button class="hamburger" aria-label="Toggle menu" id="menuBtn"><i class="fa-solid fa-bars"></i></button>
-    <ul class="menu" id="menu">
-      <li><a href="index.html">Home</a></li>
-
-<li><a href="report.html">Reports</a></li>
-      
-    </ul>
-  </div>
-</nav>
-
-<!-- Hero (bright)—no dark overlay -->
-<section class="hero" aria-label="Projects hero">
-  <div class="container">
-    <span class="chip"><i class="fa-solid fa-award"></i> Proven Results</span>
-    <h1>Recent Projects & Case Studies</h1>
-    <p>Clean water access,and infrastructure—built to last across Kenya.</p>
-    <div class="cta-row">
-      <a class="btn" href="contact.html"><i class="fa-solid fa-phone"></i> Request a Quote</a>
-      <a class="btn outline" href="#list"><i class="fa-solid fa-list"></i> Explore Projects</a>
-    </div>
-  </div>
-</section>
-
-<!-- Filters (visual only) -->
-<section class="filters">
-  <div class="container filter-row">
-    <a href="#list" class="chip active"><i class="fa-solid fa-layer-group"></i> All</a>
-    <a href="#boreholes" class="chip"><i class="fa-solid fa-faucet"></i> Boreholes</a>
-    <a href="#buildings" class="chip"><i class="fa-solid fa-city"></i> Buildings</a>
-    <a href="#solar" class="chip"><i class="fa-solid fa-solar-panel"></i> Solar Pumping</a>
-  </div>
-</section>
-
-<!-- Projects Grid -->
-<main id="list" class="container" style="padding-bottom:20px">
-  <div class="grid">
-
-    <article class="card" id="boreholes">
-      <div class="media"><img src="images/r3.jpg" alt="School borehole"/></div>
-      <div class="body">
-        <div class="meta">
-          <span class="tag">Borehole</span>
-          <span class="loc"><i class="fa-solid fa-location-dot"></i> Kisumu, Kenya</span>
-        </div>
-        <h3>Kisumu School Water Project</h3>
-        <p>150m borehole with stainless screens, submersible pump, disinfection and 50,000L storage—serving 1,200 students.</p>
-        <div class="actions">
-     </div>
+        <button
+          class="btn outline"
+          onclick="window.open('https://maps.google.com/?q=Shell+Petrol+Station+Nyamasaria%2C+Kisumu','_blank','noopener')"
+        >
+          <i class="fa-solid fa-map"></i> Visit Us
+        </button>
       </div>
-    </article>
+    </div>
 
-    <article class="card" id="roads">
-      <div class="media"><img src="images/r8.jpg" alt="Village road"/></div>
-      <div class="body">
-        <div class="meta">
-          <span class="tag">Roads</span>
-          <span class="loc"><i class="fa-solid fa-location-dot"></i> Siaya, Kenya</span>
+    <!-- Brand -->
+    <header class="brand">
+      <div class="container brandbox">
+        <img
+          class="brand-logo"
+          src="images/BKM.png"
+          alt="Booker Investment logo"
+        />
+        <div>
+          <div class="brand-name">BOOKER INVESTMENT GROUP Ltd</div>
+          <div class="brand-tag">Good water makes life better</div>
         </div>
-        <h3>Village Access Road Program</h3>
-        <p>Five rural corridors upgraded with culverts, drainage and lateritic surfacing for all-weather access.</p>
-        <div class="actions">
+      </div>
+    </header>
+
+    <!-- Nav -->
+    <nav class="nav">
+      <div class="container nav-inner">
+        <button class="hamburger" aria-label="Toggle menu" id="menuBtn">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <ul class="menu" id="menu">
+          <li><a href="index.html">Home</a></li>
+
+          <li><a href="report.html">Reports</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- Hero (bright)—no dark overlay -->
+    <section class="hero" aria-label="Projects hero">
+      <div class="container">
+        <span class="chip"
+          ><i class="fa-solid fa-award"></i> Proven Results</span
+        >
+        <h1>Recent Projects & Case Studies</h1>
+        <p>Clean water access,and infrastructure—built to last across Kenya.</p>
+        <div class="cta-row">
+          <a class="btn" href="contact.html"
+            ><i class="fa-solid fa-phone"></i> Request a Quote</a
+          >
+          <a class="btn outline" href="#list"
+            ><i class="fa-solid fa-list"></i> Explore Projects</a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Filters (visual only) -->
+    <section class="filters">
+      <div class="container filter-row">
+        <a href="#list" class="chip active"
+          ><i class="fa-solid fa-layer-group"></i> All</a
+        >
+        <a href="#boreholes" class="chip"
+          ><i class="fa-solid fa-faucet"></i> Boreholes</a
+        >
+        <a href="#buildings" class="chip"
+          ><i class="fa-solid fa-city"></i> Buildings</a
+        >
+        <a href="#solar" class="chip"
+          ><i class="fa-solid fa-solar-panel"></i> Solar Pumping</a
+        >
+      </div>
+    </section>
+
+    <!-- Projects Grid -->
+    <main id="list" class="container" style="padding-bottom: 20px">
+      <div class="grid">
+        <article class="card" id="boreholes">
+          <div class="media">
+            <img src="images/r3.jpg" alt="School borehole" />
           </div>
-      </div>
-    </article>
-
-    <article class="card" id="buildings">
-      <div class="media"><img src="images/r10.jpg" alt="Apartments"/></div>
-      <div class="body">
-        <div class="meta">
-          <span class="tag">Buildings</span>
-          <span class="loc"><i class="fa-solid fa-location-dot"></i> Nairobi, Kenya</span>
-        </div>
-        <h3>Modern Apartment Blocks</h3>
-        <p>Reinforced concrete frame, efficient design and safe water reticulation serving 1,200 residents.</p>
-        <div class="actions">
+          <div class="body">
+            <div class="meta">
+              <span class="tag">Borehole</span>
+              <span class="loc"
+                ><i class="fa-solid fa-location-dot"></i> Kisumu, Kenya</span
+              >
+            </div>
+            <h3>Kisumu School Water Project</h3>
+            <p>
+              150m borehole with stainless screens, submersible pump,
+              disinfection and 50,000L storage—serving 1,200 students.
+            </p>
+            <div class="actions"></div>
           </div>
-      </div>
-    </article>
+        </article>
 
-    <article class="card" id="solar">
-      <div class="media">
-        <video controls preload="metadata" poster="images/projects/solar-poster.jpg">
-          <source src="images/v1.mp4" type="video/mp4">
-        </video>
-      </div>
-      <div class="body">
-        <div class="meta">
-          <span class="tag">Solar</span>
-          <span class="loc"><i class="fa-solid fa-location-dot"></i> Turkana, Kenya</span>
-        </div>
-        <h3>Solar Pumping Upgrade</h3>
-        <p>15kWp array with deep-set pump delivering 120 m³/day for a remote clinic and households.</p>
-        <div class="actions">
+        <article class="card" id="roads">
+          <div class="media">
+            <img src="images/r8.jpg" alt="Village road" />
           </div>
-      </div>
-    </article>
+          <div class="body">
+            <div class="meta">
+              <span class="tag">Roads</span>
+              <span class="loc"
+                ><i class="fa-solid fa-location-dot"></i> Siaya, Kenya</span
+              >
+            </div>
+            <h3>Village Access Road Program</h3>
+            <p>
+              Five rural corridors upgraded with culverts, drainage and
+              lateritic surfacing for all-weather access.
+            </p>
+            <div class="actions"></div>
+          </div>
+        </article>
 
-    <article class="card">
-      <div class="media"><img src="images/r8.jpg" alt="Drainage"/></div>
-      <div class="body">
-        <div class="meta">
-          <span class="tag">Roads</span>
-          <span class="loc"><i class="fa-solid fa-location-dot"></i> Kakamega, Kenya</span>
+        <article class="card" id="buildings">
+          <div class="media"><img src="images/r10.jpg" alt="Apartments" /></div>
+          <div class="body">
+            <div class="meta">
+              <span class="tag">Buildings</span>
+              <span class="loc"
+                ><i class="fa-solid fa-location-dot"></i> Nairobi, Kenya</span
+              >
+            </div>
+            <h3>Modern Apartment Blocks</h3>
+            <p>
+              Reinforced concrete frame, efficient design and safe water
+              reticulation serving 1,200 residents.
+            </p>
+            <div class="actions"></div>
+          </div>
+        </article>
+
+        <article class="card" id="solar">
+          <div class="media">
+            <video
+              controls
+              preload="metadata"
+              poster="images/projects/solar-poster.jpg"
+            >
+              <source src="images/v1.mp4" type="video/mp4" />
+            </video>
+          </div>
+          <div class="body">
+            <div class="meta">
+              <span class="tag">Solar</span>
+              <span class="loc"
+                ><i class="fa-solid fa-location-dot"></i> Turkana, Kenya</span
+              >
+            </div>
+            <h3>Solar Pumping Upgrade</h3>
+            <p>
+              15kWp array with deep-set pump delivering 120 m³/day for a remote
+              clinic and households.
+            </p>
+            <div class="actions"></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media"><img src="images/r8.jpg" alt="Drainage" /></div>
+          <div class="body">
+            <div class="meta">
+              <span class="tag">Roads</span>
+              <span class="loc"
+                ><i class="fa-solid fa-location-dot"></i> Kakamega, Kenya</span
+              >
+            </div>
+            <h3>Roadside Drainage Systems</h3>
+            <p>
+              Concrete side drains and mitre outlets to protect pavements and
+              farms from flooding.
+            </p>
+            <div class="actions"></div>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="media">
+            <img src="images/r10.jpg" alt="Community borehole" />
+          </div>
+          <div class="body">
+            <div class="meta">
+              <span class="tag">Borehole</span>
+              <span class="loc"
+                ><i class="fa-solid fa-location-dot"></i> Eldoret, Kenya</span
+              >
+            </div>
+            <h3>Community Borehole Commissioning</h3>
+            <p>
+              180m drilling, test pumping, headworks and kiosk — reliable safe
+              water for ~3,500 people.
+            </p>
+            <div class="actions"></div>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <!-- Feature Band -->
+    <section class="highlight" aria-label="Case study">
+      <div class="container wrap">
+        <div>
+          <h2>Case Study: Arid Lands Water Access</h2>
+          <p>
+            High-yield production well with solar pumping, elevated storage and
+            smart metering—cutting tanker costs by 70%.
+          </p>
+          <p>
+            End-to-end delivery: hydro-survey, drilling, test pumping, quality
+            control, civil works and training.
+          </p>
+          <div class="actions" style="margin-top: 10px"></div>
         </div>
-        <h3>Roadside Drainage Systems</h3>
-        <p>Concrete side drains and mitre outlets to protect pavements and farms from flooding.</p>
-        <div class="actions">
-         </div>
-      </div>
-    </article>
 
-    <article class="card">
-      <div class="media"><img src="images/r10.jpg" alt="Community borehole"/></div>
-      <div class="body">
-        <div class="meta">
-          <span class="tag">Borehole</span>
-          <span class="loc"><i class="fa-solid fa-location-dot"></i> Eldoret, Kenya</span>
+        <div>
+          <!-- Autoplaying, looping video -->
+          <video
+            id="caseVideo"
+            class="auto-play"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            controls
+            poster="images/projects/case-poster.jpg"
+          >
+            <source src="images/v2.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
         </div>
-        <h3>Community Borehole Commissioning</h3>
-        <p>180m drilling, test pumping, headworks and kiosk — reliable safe water for ~3,500 people.</p>
-        <div class="actions">
-         </div>
       </div>
-    </article>
+    </section>
 
-  </div>
-</main>
+    <script>
+      (function () {
+        const vid = document.getElementById("caseVideo");
+        if (!vid) return;
 
-<!-- Feature Band -->
-<section class="highlight" aria-label="Case study">
-  <div class="container wrap">
-    <div>
-      <h2>Case Study: Arid Lands Water Access</h2>
-      <p>High-yield production well with solar pumping, elevated storage and smart metering—cutting tanker costs by 70%.</p>
-      <p>End-to-end delivery: hydro-survey, drilling, test pumping, quality control, civil works and training.</p>
-      <div class="actions" style="margin-top:10px"></div>
-    </div>
+        // Make sure all autoplay requirements are set (covers iOS/Safari quirks)
+        vid.muted = true;
+        vid.autoplay = true;
+        vid.loop = true;
+        vid.playsInline = true; // property
+        vid.setAttribute("playsinline", ""); // attribute
+        vid.setAttribute("muted", ""); // attribute
 
-    <div>
-      <!-- Autoplaying, looping video -->
-      <video
-        id="caseVideo"
-        class="auto-play"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        controls
-        poster="images/projects/case-poster.jpg">
-        <source src="images/v2.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-      </video>
-    </div>
-  </div>
-</section>
+        const tryPlay = () => vid.play().catch(() => {});
 
-<script>
-  (function () {
-    const vid = document.getElementById('caseVideo');
-    if (!vid) return;
+        // Start when ready
+        vid.addEventListener("canplay", tryPlay, { once: true });
 
-    // Make sure all autoplay requirements are set (covers iOS/Safari quirks)
-    vid.muted = true;
-    vid.autoplay = true;
-    vid.loop = true;
-    vid.playsInline = true;                // property
-    vid.setAttribute('playsinline', '');   // attribute
-    vid.setAttribute('muted', '');         // attribute
+        // Resume after tab becomes visible again
+        document.addEventListener("visibilitychange", () => {
+          if (!document.hidden) tryPlay();
+        });
 
-    const tryPlay = () => vid.play().catch(() => {});
+        // If it ever pauses unexpectedly, kick it (user can still pause with controls)
+        vid.addEventListener("pause", () => {
+          if (!vid.ended) tryPlay();
+        });
 
-    // Start when ready
-    vid.addEventListener('canplay', tryPlay, { once: true });
+        // Initial nudge
+        tryPlay();
+      })();
+    </script>
 
-    // Resume after tab becomes visible again
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) tryPlay();
-    });
+    <script>
+      const vid = document.querySelector("#solar video");
+      if (vid) {
+        vid.muted = true;
+        const tryPlay = () => vid.play().catch(() => {});
+        vid.addEventListener("canplay", tryPlay);
+        document.addEventListener("visibilitychange", () => {
+          if (!document.hidden) tryPlay();
+        });
+      }
+    </script>
 
-    // If it ever pauses unexpectedly, kick it (user can still pause with controls)
-    vid.addEventListener('pause', () => {
-      if (!vid.ended) tryPlay();
-    });
+    <!-- Footer -->
+    <footer>
+      <h3>Booker Investment Group Ltd</h3>
+      <div>
+        <a href="#" class="chip"
+          ><i class="fa-solid fa-droplet"></i> Clean Water Systems</a
+        >
+      </div>
+      <div class="copyright">
+        &copy; <span id="year"></span> Booker Investment Group Ltd. All rights
+        reserved.
+      </div>
+    </footer>
+    <script>
+      // footer year
+      document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Initial nudge
-    tryPlay();
-  })();
-</script>
-
-<script>
-  const vid = document.querySelector('#solar video');
-  if (vid) {
-    vid.muted = true;
-    const tryPlay = () => vid.play().catch(() => {});
-    vid.addEventListener('canplay', tryPlay);
-    document.addEventListener('visibilitychange', () => {
-      if (!document.hidden) tryPlay();
-    });
-  }
-</script>
-
-
-<!-- Footer -->
-<footer>
-  <h3>Booker Investment Group Ltd</h3>
-  <div><a href="#" class="chip"><i class="fa-solid fa-droplet"></i> Clean Water Systems</a></div>
-  <div class="copyright">&copy; <span id="year"></span> Booker Investment Group Ltd. All rights reserved.</div>
-</footer>
-<script>
-  // footer year
-  document.getElementById('year').textContent = new Date().getFullYear();
-
-  // mobile menu
-  const menuBtn=document.getElementById('menuBtn');
-  const menu=document.getElementById('menu');
-  if(menuBtn){
-    menuBtn.addEventListener('click',()=>menu.classList.toggle('show'));
-    menu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>menu.classList.remove('show')));
-  }
-</script>
-</body>
+      // mobile menu
+      const menuBtn = document.getElementById("menuBtn");
+      const menu = document.getElementById("menu");
+      if (menuBtn) {
+        menuBtn.addEventListener("click", () => menu.classList.toggle("show"));
+        menu
+          .querySelectorAll("a")
+          .forEach((a) =>
+            a.addEventListener("click", () => menu.classList.remove("show"))
+          );
+      }
+    </script>
+  </body>
 </html>

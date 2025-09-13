@@ -1,0 +1,2290 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Borehole Completion Report Generator - Booker Investment Group
+    </title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Icons -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      /* ========== Base / Reset ========== */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+      :root {
+        --blue: #47b2e4;
+        --blue-ink: #003366;
+        --ink: #111;
+        --text: #333;
+        --muted: #666;
+        --bg: #fff;
+        --light: #f7fbff;
+        --radius-lg: 18px;
+        --shadow: 0 8px 22px rgba(0, 0, 0, 0.06);
+      }
+      html,
+      body {
+        height: 100%;
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial,
+          sans-serif;
+        color: var(--text);
+        background: var(--bg);
+        line-height: 1.6;
+      }
+      img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+      }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+      .container {
+        width: min(1200px, 92%);
+        margin-inline: auto;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.6rem;
+        padding: 0.85rem 1.35rem;
+        font-weight: 700;
+        border-radius: 999px;
+        border: 0;
+        cursor: pointer;
+        background: var(--blue);
+        color: #000;
+        box-shadow: var(--shadow);
+        transition: 0.2s transform ease, 0.2s filter ease;
+      }
+      .btn:hover {
+        transform: translateY(-1px);
+        filter: brightness(1.06);
+      }
+      .btn.outline {
+        background: #fff;
+        border: 2px solid var(--blue);
+        color: var(--ink);
+      }
+      .chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 999px;
+        background: #eaf6fe;
+        color: #024;
+        font-weight: 600;
+      }
+
+      /* ========== Top Bar ========== */
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: #fff;
+        border-bottom: 1px solid #eee;
+      }
+      .topbar-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.6rem 0;
+      }
+      .topbar .btn {
+        padding: 0.6rem 1rem;
+      }
+      .topbar .phone {
+        font-weight: 800;
+        letter-spacing: 0.5px;
+      }
+
+      /* ===== Brand ===== */
+      header.brand {
+        text-align: center;
+        padding: 16px 0 12px;
+      }
+      .brandbox {
+        display: flex;
+        gap: 14px;
+        align-items: center;
+        justify-content: center;
+      }
+      .brand-logo {
+        height: 74px;
+        width: auto;
+      } /* ← main logo sizing */
+      .brand-name {
+        font-weight: 900;
+        letter-spacing: 0.4px;
+        color: var(--blue-ink);
+      }
+      .brand-tag {
+        color: #083a66;
+        font-weight: 700;
+        font-size: 0.98rem;
+        margin-top: 4px;
+      }
+
+      /* Global image styles that also apply to the logo */
+      img,
+      video {
+        max-width: 100%;
+        height: auto;
+        border-radius: 14px;
+        display: block;
+      }
+
+      /* ========== Navigation ========== */
+      .nav {
+        background: var(--blue);
+        position: sticky;
+        top: 57px;
+        z-index: 45;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+      }
+      .nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .menu {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        flex-wrap: wrap;
+      }
+      .menu > li {
+        position: relative;
+      }
+      .menu > a,
+      .menu > li > a {
+        display: block;
+        padding: 14px 18px;
+        font-weight: 800;
+        color: #000;
+        border-bottom: 2px solid transparent;
+      }
+      .menu > li > a.active,
+      .menu > li > a:hover {
+        border-bottom-color: #000;
+      }
+
+      /* Dropdown (simple, optional) */
+      .has-sub > a::after {
+        content: "\f107";
+        font-family: "Font Awesome 6 Free";
+        font-weight: 900;
+        margin-left: 0.5rem;
+      }
+      .sub {
+        position: absolute;
+        left: 0;
+        top: 100%;
+        background: #fff;
+        min-width: 220px;
+        border-radius: 12px;
+        box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        padding: 0.4rem;
+        display: none;
+      }
+      .sub a {
+        display: block;
+        padding: 0.6rem 0.8rem;
+        border-radius: 10px;
+        color: #111;
+        font-weight: 600;
+      }
+      .sub a:hover {
+        background: #f3f9ff;
+      }
+      .has-sub:hover .sub {
+        display: block;
+      }
+
+      /* Mobile nav */
+      .hamburger {
+        display: none;
+        border: 0;
+        background: transparent;
+        font-size: 1.4rem;
+        padding: 10px;
+      }
+      @media (max-width: 920px) {
+        .nav-inner {
+          justify-content: space-between;
+          padding-inline: 10px;
+        }
+        .hamburger {
+          display: block;
+        }
+        .menu {
+          width: 100%;
+          flex-direction: column;
+          display: none;
+        }
+        .menu.show {
+          display: flex;
+        }
+        .menu > li > a {
+          padding: 14px;
+        }
+        .sub {
+          position: static;
+          box-shadow: none;
+          padding: 0;
+          background: transparent;
+        }
+        .sub a {
+          padding: 0.6rem 1.2rem;
+        }
+      }
+
+      /* Report page specific styles */
+      .report-header {
+        background-color: var(--blue);
+        color: white;
+        padding: 20px;
+        border-radius: var(--radius-lg);
+        margin-bottom: 20px;
+        text-align: center;
+        box-shadow: var(--shadow);
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin-bottom: 15px;
+        color: var(--blue-ink);
+      }
+
+      .report-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      @media (min-width: 992px) {
+        .report-container {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .preview-section {
+          grid-column: 2;
+          grid-row: 1 / span 100;
+        }
+      }
+
+      .card {
+        background: white;
+        border-radius: var(--radius-lg);
+        padding: 20px;
+        box-shadow: var(--shadow);
+        margin-bottom: 20px;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      button.report-btn {
+        background-color: var(--blue);
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: background-color 0.3s;
+      }
+
+      button.report-btn:hover {
+        background-color: var(--blue-ink);
+      }
+
+      .btn-secondary {
+        background-color: #6c757d;
+      }
+
+      .btn-secondary:hover {
+        background-color: #5a6268;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 15px;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #eaf6fe;
+      }
+
+      .table-controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      .table-controls button {
+        padding: 8px 12px;
+      }
+
+      .metrics-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .metric-card {
+        background-color: #eaf6fe;
+        padding: 15px;
+        border-radius: var(--radius-lg);
+        text-align: center;
+      }
+
+      .metric-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: var(--blue-ink);
+      }
+
+      .chart-container {
+        position: relative;
+        height: 300px;
+        margin-bottom: 20px;
+      }
+
+      .section-title {
+        border-bottom: 2px solid var(--blue-ink);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .tab-container {
+        display: flex;
+        margin-bottom: 20px;
+        overflow-x: auto;
+        background: var(--blue);
+        border-radius: var(--radius-lg);
+        padding: 10px;
+      }
+
+      .tab {
+        padding: 10px 20px;
+        background-color: #eaf6fe;
+        border: 1px solid var(--blue);
+        cursor: pointer;
+        white-space: nowrap;
+        border-radius: 999px;
+        margin-right: 10px;
+        font-weight: 600;
+      }
+
+      .tab.active {
+        background-color: var(--blue-ink);
+        color: white;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content.active {
+        display: block;
+      }
+
+      .preview-section {
+        background: white;
+        padding: 20px;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+        height: fit-content;
+        position: sticky;
+        top: 120px;
+      }
+
+      .report-page {
+        background: white;
+        padding: 30px;
+        box-shadow: var(--shadow);
+        margin-bottom: 20px;
+        min-height: 842px; /* A4 height in pixels at 96dpi */
+      }
+
+      .report-header-inner {
+        text-align: center;
+        margin-bottom: 30px;
+        border-bottom: 2px solid var(--blue);
+        padding-bottom: 20px;
+      }
+
+      .print-only {
+        display: none;
+      }
+
+      @media print {
+        body,
+        .report-page {
+          margin: 0;
+          padding: 0;
+          box-shadow: none;
+          background: white;
+        }
+
+        .no-print {
+          display: none;
+        }
+
+        .print-only {
+          display: block;
+        }
+
+        .report-page {
+          page-break-after: always;
+          min-height: auto;
+        }
+      }
+
+      .toc-list {
+        list-style-type: none;
+        padding-left: 20px;
+      }
+
+      .toc-list li {
+        margin-bottom: 8px;
+      }
+
+      .toc-list a {
+        text-decoration: none;
+        color: var(--blue-ink);
+      }
+
+      .toc-list a:hover {
+        text-decoration: underline;
+      }
+
+      .wrma-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+      }
+
+      .full-width {
+        grid-column: 1 / span 2;
+      }
+
+      .pdf-viewer-container {
+        width: 100%;
+        height: 600px;
+        border: 1px solid #ddd;
+        border-radius: var(--radius-lg);
+        margin-bottom: 15px;
+        overflow: hidden;
+      }
+
+      .pdf-controls {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 15px;
+      }
+
+      /* Form section styling */
+      .form-section {
+        margin-bottom: 30px;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 991px) {
+        .preview-section {
+          position: static;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .tab-container {
+          flex-direction: column;
+        }
+
+        .tab {
+          margin-bottom: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Top Bar -->
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <button
+          class="btn"
+          onclick="window.open('https://mail.google.com/mail/?view=cm&fs=1&to=bookerinvestmentgroupltd@gmail.com&su=Inquiry%20from%20Booker%20site&body=Hello%20Booker%20Team,%0A%0A...', '_blank')"
+        >
+          <i class="fa-solid fa-pen"></i> Write a message
+        </button>
+
+        <a
+          class="btn outline"
+          href="https://wa.me/254722536867?text=Hello%20Booker%20Investment%20Group%2C%20I%27d%20like%20to%20learn%20more%20about%20your%20services."
+          target="_blank"
+          rel="noopener"
+        >
+          <i class="fa-brands fa-whatsapp"></i> WhatsApp
+        </a>
+
+        <button
+          class="btn outline"
+          onclick="window.open('https://maps.google.com/?q=Shell+Petrol+Station+Nyamasaria%2C+Kisumu','_blank','noopener')"
+        >
+          <i class="fa-solid fa-map"></i> Visit Us
+        </button>
+      </div>
+    </div>
+
+    <!-- Brand -->
+    <header class="brand">
+      <div class="container brandbox">
+        <img
+          class="brand-logo"
+          src="images/BKM.png"
+          alt="Booker Investment logo"
+        />
+        <div>
+          <div class="brand-name">BOOKER INVESTMENT GROUP Ltd</div>
+          <div class="brand-tag">Good water makes life better</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Nav -->
+    <nav class="nav">
+      <div class="container nav-inner">
+        <button class="hamburger" aria-label="Toggle menu" id="menuBtn">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+        <ul class="menu" id="menu">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="project.html">Our Work</a></li>
+          <li><a href="report.html" class="active">Reports</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="container">
+      <div class="report-header">
+        <h1>Borehole Completion Report Generator</h1>
+        <p>Create professional borehole completion reports with ease</p>
+      </div>
+
+      <div class="report-container">
+        <div class="input-section">
+          <div class="card">
+            <h2>Report Template</h2>
+            <div class="form-group">
+              <label for="template-select">Select Template:</label>
+              <select id="template-select">
+                <option value="kenya-wrma">
+                  Kenya WRMA Borehole Completion Report
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="tab-container">
+            <div class="tab active" data-tab="client">Client Details</div>
+            <div class="tab" data-tab="contractor">Contractor Details</div>
+            <div class="tab" data-tab="introduction">Introduction</div>
+            <div class="tab" data-tab="wrma">WRMA Form</div>
+            <div class="tab" data-tab="borehole">Borehole Details</div>
+            <div class="tab" data-tab="casings">Casings & Screens</div>
+            <div class="tab" data-tab="hydraulics">Hydraulic Parameters</div>
+            <div class="tab" data-tab="parameters">Borehole Parameters</div>
+            <div class="tab" data-tab="pumping">Pumping Test</div>
+            <div class="tab" data-tab="recovery">Recovery Data</div>
+            <div class="tab" data-tab="water">Water Quality</div>
+            <div class="tab" data-tab="recommendations">Recommendations</div>
+          </div>
+
+          <!-- Client Details -->
+          <div class="card tab-content active" id="client-tab">
+            <h3>Client Details</h3>
+            <div class="form-group">
+              <label for="client-name">Client Name:</label>
+              <input
+                type="text"
+                id="client-name"
+                placeholder="Family Humanitarian Experience–Kenya"
+              />
+            </div>
+            <div class="form-group">
+              <label for="client-address">Address:</label>
+              <input
+                type="text"
+                id="client-address"
+                placeholder="P.O BOX 2871-50100 KAKAMEGA"
+              />
+            </div>
+            <div class="form-group">
+              <label for="client-contact">Contact:</label>
+              <input
+                type="text"
+                id="client-contact"
+                placeholder="Phone, Email"
+              />
+            </div>
+          </div>
+
+          <!-- Contractor Details -->
+          <div class="card tab-content" id="contractor-tab">
+            <h3>Contractor Details</h3>
+            <div class="form-group">
+              <label for="contractor-name">Contractor Name:</label>
+              <input
+                type="text"
+                id="contractor-name"
+                placeholder="BOOKER INVESTMENT GROUP LIMITED"
+              />
+            </div>
+            <div class="form-group">
+              <label for="contractor-address">Address:</label>
+              <input
+                type="text"
+                id="contractor-address"
+                placeholder="P.O BOX 2014-40100 KISUMU"
+              />
+            </div>
+            <div class="form-group">
+              <label for="contractor-license">License Number:</label>
+              <input
+                type="text"
+                id="contractor-license"
+                placeholder="WD/WC/1102"
+              />
+            </div>
+            <div class="form-group">
+              <label for="contractor-supervisor">Supervisor:</label>
+              <input
+                type="text"
+                id="contractor-supervisor"
+                placeholder="Hydrogeologist"
+              />
+            </div>
+            <div class="form-group">
+              <label for="contractor-contact">Contact:</label>
+              <input
+                type="text"
+                id="contractor-contact"
+                placeholder="Phone, Email"
+              />
+            </div>
+          </div>
+
+          <!-- Introduction -->
+          <div class="card tab-content" id="introduction-tab">
+            <h3>Introduction</h3>
+            <div class="form-group">
+              <label for="introduction-text">Introduction Text:</label>
+              <textarea
+                id="introduction-text"
+                rows="6"
+                placeholder="This report presents the findings of borehole drilling works..."
+              ></textarea>
+            </div>
+
+            <h4>Scope of the Project</h4>
+            <div class="form-group">
+              <label for="scope-text">Scope Details:</label>
+              <textarea
+                id="scope-text"
+                rows="6"
+                placeholder="The works carried out in this project include:&#10;• Hydrogeological Survey and Reporting&#10;• Application and Processing of Water Resources Authority (WRA) Drilling Permit&#10;• ..."
+              ></textarea>
+            </div>
+
+            <h4>Drilling Process and Activities</h4>
+            <div class="form-group">
+              <label for="drilling-process">Drilling Process Details:</label>
+              <textarea
+                id="drilling-process"
+                rows="6"
+                placeholder="Mobilization to the site was done on..."
+              ></textarea>
+            </div>
+
+            <h4>Borehole Construction and Development</h4>
+            <div class="form-group">
+              <label for="construction-text">Construction Details:</label>
+              <textarea
+                id="construction-text"
+                rows="4"
+                placeholder="An 8' borehole was successfully drilled to..."
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="development-text">Development Details:</label>
+              <textarea
+                id="development-text"
+                rows="4"
+                placeholder="Development was done on..."
+              ></textarea>
+            </div>
+
+            <div class="form-group">
+              <label for="test-pumping-text">Test Pumping Details:</label>
+              <textarea
+                id="test-pumping-text"
+                rows="4"
+                placeholder="The borehole was test pumped constantly for..."
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- WRMA Form - Updated to use PDF -->
+          <div class="card tab-content" id="wrma-tab">
+            <h3>Water Resources Management Authority Form</h3>
+
+            <div class="pdf-controls">
+              <button class="report-btn" id="download-wrma-form">
+                Download WRA 009 Form
+              </button>
+              <button class="report-btn" id="upload-filled-form">
+                Upload Filled Form
+              </button>
+              <input
+                type="file"
+                id="form-upload"
+                accept=".pdf"
+                style="display: none"
+              />
+            </div>
+
+            <div class="pdf-viewer-container">
+              <iframe
+                id="pdf-viewer"
+                src=""
+                width="100%"
+                height="100%"
+                frameborder="0"
+              ></iframe>
+            </div>
+
+            <div class="form-group">
+              <label for="wrma-notes">Notes:</label>
+              <textarea
+                id="wrma-notes"
+                rows="4"
+                placeholder="Add any notes about the WRMA form here..."
+              ></textarea>
+            </div>
+          </div>
+
+          <!-- Borehole Details -->
+          <div class="card tab-content" id="borehole-tab">
+            <h3>Borehole & Drilling Summary</h3>
+            <div class="form-group">
+              <label for="borehole-name">Borehole Name:</label>
+              <input
+                type="text"
+                id="borehole-name"
+                placeholder="OSIRA COMMUNITY BOREHOLE"
+              />
+            </div>
+            <div class="form-group">
+              <label for="borehole-location">Location:</label>
+              <input
+                type="text"
+                id="borehole-location"
+                placeholder="Osira Community in Nyamila, Alego Usonga Sub-County, Siaya County"
+              />
+            </div>
+            <div class="form-group">
+              <label for="borehole-coordinates">Coordinates:</label>
+              <input
+                type="text"
+                id="borehole-coordinates"
+                placeholder="00°7'2.77″N; 34°19'21.532″E"
+              />
+            </div>
+            <div class="form-group">
+              <label for="borehole-depth">Depth (m):</label>
+              <input type="number" id="borehole-depth" placeholder="60" />
+            </div>
+            <div class="form-group">
+              <label for="hole-diameter-top">Hole Diameter Top (mm):</label>
+              <input type="number" id="hole-diameter-top" placeholder="279.4" />
+            </div>
+            <div class="form-group">
+              <label for="hole-diameter-bottom"
+                >Hole Diameter Bottom (mm):</label
+              >
+              <input
+                type="number"
+                id="hole-diameter-bottom"
+                placeholder="203.2"
+              />
+            </div>
+            <div class="form-group">
+              <label for="screen-slot-size">Screen Slot Size (mm):</label>
+              <input type="text" id="screen-slot-size" placeholder="1.5mm" />
+            </div>
+            <div class="form-group">
+              <label for="gravel-pack-size">Gravel Pack Size (mm):</label>
+              <input type="text" id="gravel-pack-size" placeholder="2-4mm" />
+            </div>
+
+            <h4>Borehole Construction Details</h4>
+            <div class="form-group">
+              <label for="drilling-start">Drilling Started (date):</label>
+              <input type="date" id="drilling-start" value="2025-07-04" />
+            </div>
+            <div class="form-group">
+              <label for="drilling-complete">Drilling Completed (date):</label>
+              <input type="date" id="drilling-complete" value="2025-07-04" />
+            </div>
+            <div class="form-group">
+              <label for="work-complete">All Work Completed (date):</label>
+              <input type="date" id="work-complete" value="2025-07-04" />
+            </div>
+
+            <h4>Aquifer Information</h4>
+            <div class="form-group">
+              <label for="first-water">First Water Struck at (m):</label>
+              <input type="number" id="first-water" value="15" step="0.01" />
+            </div>
+            <div class="form-group">
+              <label for="main-aquifer">Main Aquifer Struck at (m):</label>
+              <input type="number" id="main-aquifer" value="45" step="0.01" />
+            </div>
+            <div class="form-group">
+              <label for="water-bearing">Water Bearing Material:</label>
+              <input type="text" id="water-bearing" value="Fractured Basalts" />
+            </div>
+            <div class="form-group">
+              <label for="water-bearing-from">From (m):</label>
+              <input type="number" id="water-bearing-from" value="15" />
+            </div>
+            <div class="form-group">
+              <label for="water-bearing-to">To (m):</label>
+              <input type="number" id="water-bearing-to" value="60" />
+            </div>
+          </div>
+
+          <!-- Casings & Screens -->
+          <div class="card tab-content" id="casings-tab">
+            <h3>Casings & Screens</h3>
+            <table id="casing-table">
+              <thead>
+                <tr>
+                  <th>From (m)</th>
+                  <th>To (m)</th>
+                  <th>Material</th>
+                  <th>Type</th>
+                  <th>Remarks</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <input type="number" class="casing-from" value="0.00" />
+                  </td>
+                  <td>
+                    <input type="number" class="casing-to" value="24.00" />
+                  </td>
+                  <td>
+                    <input type="text" class="casing-material" value="uPVC" />
+                  </td>
+                  <td>
+                    <select class="casing-type">
+                      <option value="Blind">Blind</option>
+                      <option value="Slotted" selected>Slotted</option>
+                    </select>
+                  </td>
+                  <td><input type="text" class="casing-remarks" /></td>
+                  <td><button class="remove-row report-btn">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+            <div class="table-controls">
+              <button class="report-btn" id="add-casing-row">Add Row</button>
+            </div>
+          </div>
+
+          <!-- Hydraulic Parameters -->
+          <div class="card tab-content" id="hydraulics-tab">
+            <h3>Hydraulic Parameters</h3>
+            <div class="form-group">
+              <label for="static-water-level">Static Water Level (m):</label>
+              <input
+                type="number"
+                id="static-water-level"
+                value="2.00"
+                step="0.01"
+              />
+            </div>
+            <div class="form-group">
+              <label for="pumping-water-level">Pumping Water Level (m):</label>
+              <input
+                type="number"
+                id="pumping-water-level"
+                value="12.66"
+                step="0.01"
+              />
+            </div>
+            <div class="form-group">
+              <label for="discharge">Discharge (m³/hr):</label>
+              <input type="number" id="discharge" value="4.0" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label for="pump-type">Pump Type:</label>
+              <input type="text" id="pump-type" value="DSD3-18" />
+            </div>
+            <div class="form-group">
+              <label for="pump-setting-depth">Pump Setting Depth (m):</label>
+              <input type="number" id="pump-setting-depth" value="52" />
+            </div>
+            <div class="form-group">
+              <label for="test-duration">Test Duration (hours):</label>
+              <input type="number" id="test-duration" value="24" />
+            </div>
+
+            <div class="metrics-container">
+              <div class="metric-card">
+                <h4>Total Drawdown</h4>
+                <div class="metric-value" id="total-drawdown">10.66 m</div>
+              </div>
+              <div class="metric-card">
+                <h4>Transmissivity</h4>
+                <div class="metric-value" id="transmissivity">10.99 m²/day</div>
+              </div>
+              <div class="metric-card">
+                <h4>Specific Capacity</h4>
+                <div class="metric-value" id="specific-capacity">
+                  9.01 m²/day
+                </div>
+              </div>
+              <div class="metric-card">
+                <h4>Safe Yield</h4>
+                <div class="metric-value" id="safe-yield">3.2 m³/hr</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Borehole Parameters -->
+          <div class="card tab-content" id="parameters-tab">
+            <h3>Borehole Parameters</h3>
+            <div class="form-group">
+              <label for="purpose-scope">Purpose and Scope:</label>
+              <textarea
+                id="purpose-scope"
+                rows="6"
+                placeholder="This report documents the test pumping data..."
+              ></textarea>
+            </div>
+
+            <h4>Aquifer Test Analysis</h4>
+            <div class="form-group">
+              <label for="pump-used">Pump Type Used:</label>
+              <input type="text" id="pump-used" value="DSD3-18 GENSET-20KVA" />
+            </div>
+
+            <div class="form-group">
+              <label for="cumulative-drawdown">Cumulative Drawdown (m):</label>
+              <input
+                type="number"
+                id="cumulative-drawdown"
+                value="10.66"
+                step="0.01"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="cumulative-percent">Cumulative Drawdown (%):</label>
+              <input
+                type="number"
+                id="cumulative-percent"
+                value="18.4"
+                step="0.1"
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="recharge-duration"
+                >Duration for the Recharge (minutes):</label
+              >
+              <input type="number" id="recharge-duration" value="60" />
+            </div>
+
+            <h4>Field Work</h4>
+            <div class="form-group">
+              <label for="test-date">Date of Test:</label>
+              <input type="date" id="test-date" value="2025-07-13" />
+            </div>
+
+            <div class="form-group">
+              <label for="test-date-end">Date of Test End:</label>
+              <input type="date" id="test-date-end" value="2025-07-14" />
+            </div>
+          </div>
+
+          <!-- Pumping Test -->
+          <div class="card tab-content" id="pumping-tab">
+            <h3>Pumping Test Data</h3>
+            <div class="form-group">
+              <textarea
+                id="pumping-csv"
+                placeholder="Paste CSV data here (Time(min), Water Level(m), Drawdown(m), Yield(m³/h), EC(µS/cm), Remarks)"
+                rows="4"
+              ></textarea>
+            </div>
+            <div class="table-controls">
+              <button class="report-btn" id="import-pumping">Import CSV</button>
+              <button class="report-btn" id="add-pumping-row">Add Row</button>
+              <button class="report-btn" id="clear-pumping-table">
+                Clear Table
+              </button>
+            </div>
+            <table id="pumping-table">
+              <thead>
+                <tr>
+                  <th>Time (min)</th>
+                  <th>Water Level (m)</th>
+                  <th>Drawdown (m)</th>
+                  <th>Yield (m³/h)</th>
+                  <th>EC (µS/cm)</th>
+                  <th>Remarks</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <input type="number" class="pumping-time" value="0" />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="pumping-water-level"
+                      value="2.00"
+                      step="0.01"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="pumping-drawdown"
+                      value="0.00"
+                      step="0.01"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="pumping-yield"
+                      value="0"
+                      step="0.1"
+                    />
+                  </td>
+                  <td><input type="number" class="pumping-ec" value="0" /></td>
+                  <td><input type="text" class="pumping-remarks" /></td>
+                  <td><button class="remove-row report-btn">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Recovery Data -->
+          <div class="card tab-content" id="recovery-tab">
+            <h3>Recovery Measurement</h3>
+            <div class="form-group">
+              <textarea
+                id="recovery-csv"
+                placeholder="Paste CSV data here (Time(min), Water Level(m), Recovery(m), Efficiency(%), Comment)"
+                rows="4"
+              ></textarea>
+            </div>
+            <div class="table-controls">
+              <button class="report-btn" id="import-recovery">
+                Import CSV
+              </button>
+              <button class="report-btn" id="add-recovery-row">Add Row</button>
+              <button class="report-btn" id="clear-recovery-table">
+                Clear Table
+              </button>
+            </div>
+            <table id="recovery-table">
+              <thead>
+                <tr>
+                  <th>Time (min)</th>
+                  <th>Water Level (m)</th>
+                  <th>Recovery (m)</th>
+                  <th>Efficiency (%)</th>
+                  <th>Comment</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <input type="number" class="recovery-time" value="0" />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="recovery-water-level"
+                      value="14.66"
+                      step="0.01"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="recovery-recovery"
+                      value="0.00"
+                      step="0.01"
+                    />
+                  </td>
+                  <td>
+                    <input
+                      type="number"
+                      class="recovery-efficiency"
+                      value="0.00"
+                      step="0.01"
+                    />
+                  </td>
+                  <td><input type="text" class="recovery-comment" /></td>
+                  <td><button class="remove-row report-btn">Remove</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Water Quality -->
+          <div class="card tab-content" id="water-tab">
+            <h3>Water Quality Data</h3>
+            <div class="form-group">
+              <label for="sample-collected">Sample Collected:</label>
+              <select id="sample-collected">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="collection-datetime">Collection Date/Time:</label>
+              <input type="datetime-local" id="collection-datetime" />
+            </div>
+            <div class="form-group">
+              <label for="water-temperature">Temperature (°C):</label>
+              <input type="number" id="water-temperature" step="0.1" />
+            </div>
+            <div class="form-group">
+              <label for="water-color">Color:</label>
+              <input type="text" id="water-color" />
+            </div>
+            <div class="form-group">
+              <label for="water-ec">EC (µS/cm):</label>
+              <input type="number" id="water-ec" />
+            </div>
+            <div class="form-group">
+              <label for="water-remarks">Remarks:</label>
+              <textarea id="water-remarks" rows="3"></textarea>
+            </div>
+          </div>
+
+          <!-- Recommendations -->
+          <div class="card tab-content" id="recommendations-tab">
+            <h3>Recommendations & Notes</h3>
+            <div class="form-group">
+              <textarea
+                id="recommendations"
+                rows="6"
+                placeholder="Enter recommendations and notes here..."
+              ></textarea>
+            </div>
+          </div>
+
+          <div class="card no-print">
+            <button class="report-btn" id="generate-report">
+              Generate Report
+            </button>
+            <button class="report-btn btn-secondary" id="reset-form">
+              Reset Form
+            </button>
+          </div>
+        </div>
+
+        <div class="preview-section no-print">
+          <h2>Report Preview</h2>
+          <div id="report-preview">
+            <p>
+              Fill out the form and click "Generate Report" to see the preview.
+            </p>
+          </div>
+          <button class="report-btn btn-secondary" id="print-report" disabled>
+            Print / Save as PDF
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== Footer ===== -->
+    <footer>
+      <h3>Booker Investment Group Ltd</h3>
+      <div>
+        <a href="#" class="chip"
+          ><i class="fa-solid fa-droplet"></i> Clean Water Systems</a
+        >
+      </div>
+      <div class="copyright">
+        &copy; <span id="year"></span> Booker Investment Group Ltd. All rights
+        reserved.
+      </div>
+    </footer>
+
+    <script>
+      // Current year in footer
+      document.getElementById("year").textContent = new Date().getFullYear();
+
+      // Mobile menu toggle
+      const menuBtn = document.getElementById("menuBtn");
+      const menu = document.getElementById("menu");
+      if (menuBtn && menu) {
+        menuBtn.addEventListener("click", () => menu.classList.toggle("show"));
+
+        // Close mobile menu after clicking a link (optional)
+        [...menu.querySelectorAll("a")].forEach((a) =>
+          a.addEventListener("click", () => {
+            if (menu.classList.contains("show")) menu.classList.remove("show");
+          })
+        );
+      }
+
+      // Report page specific JavaScript
+      document.addEventListener("DOMContentLoaded", function () {
+        // Tab navigation
+        const tabs = document.querySelectorAll(".tab");
+        const tabContents = document.querySelectorAll(".tab-content");
+
+        tabs.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            const tabId = tab.getAttribute("data-tab");
+
+            // Deactivate all tabs and contents
+            tabs.forEach((t) => t.classList.remove("active"));
+            tabContents.forEach((c) => c.classList.remove("active"));
+
+            // Activate current tab and content
+            tab.classList.add("active");
+            document.getElementById(`${tabId}-tab`).classList.add("active");
+
+            // If WRMA tab is selected, load the PDF
+            if (tabId === "wrma") {
+              loadWrmaPdf();
+            }
+          });
+        });
+
+        // Load WRMA PDF form
+        function loadWrmaPdf() {
+          // Assuming the PDF is stored in the same directory with the name "WRA009.pdf"
+          const pdfViewer = document.getElementById("pdf-viewer");
+          pdfViewer.src = "WRA009.pdf";
+        }
+
+        // Download WRMA form button
+        document
+          .getElementById("download-wrma-form")
+          .addEventListener("click", function () {
+            // Create a temporary link to download the PDF
+            const link = document.createElement("a");
+            link.href = "WRA009.pdf";
+            link.download = "WRA009_Borehole_Completion_Record.pdf";
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          });
+
+        // Upload filled form button
+        document
+          .getElementById("upload-filled-form")
+          .addEventListener("click", function () {
+            document.getElementById("form-upload").click();
+          });
+
+        // Handle form upload
+        document
+          .getElementById("form-upload")
+          .addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (file && file.type === "application/pdf") {
+              const reader = new FileReader();
+              reader.onload = function (e) {
+                // Display the uploaded PDF in the viewer
+                document.getElementById("pdf-viewer").src = e.target.result;
+              };
+              reader.readAsDataURL(file);
+            } else {
+              alert("Please select a valid PDF file.");
+            }
+          });
+
+        // Table row management
+        function setupTableListeners(tableId, addButtonId) {
+          const table = document.getElementById(tableId);
+          const addButton = document.getElementById(addButtonId);
+
+          addButton.addEventListener("click", () => {
+            const tbody = table.querySelector("tbody");
+            const firstRow = tbody.querySelector("tr");
+            const newRow = firstRow.cloneNode(true);
+
+            // Clear input values in the new row
+            newRow.querySelectorAll("input").forEach((input) => {
+              input.value = "";
+            });
+
+            tbody.appendChild(newRow);
+            setupRemoveRowListeners();
+          });
+
+          setupRemoveRowListeners();
+        }
+
+        function setupRemoveRowListeners() {
+          document.querySelectorAll(".remove-row").forEach((button) => {
+            button.addEventListener("click", (e) => {
+              const row = e.target.closest("tr");
+              if (row && row.parentElement.children.length > 1) {
+                row.remove();
+              }
+            });
+          });
+        }
+
+        // Setup table listeners
+        setupTableListeners("casing-table", "add-casing-row");
+        setupTableListeners("pumping-table", "add-pumping-row");
+        setupTableListeners("recovery-table", "add-recovery-row");
+
+        // CSV import functionality
+        document
+          .getElementById("import-pumping")
+          .addEventListener("click", () => {
+            importCSV("pumping-csv", "pumping-table");
+          });
+
+        document
+          .getElementById("import-recovery")
+          .addEventListener("click", () => {
+            importCSV("recovery-csv", "recovery-table");
+          });
+
+        function importCSV(textareaId, tableId) {
+          const csvText = document.getElementById(textareaId).value.trim();
+          if (!csvText) return;
+
+          const rows = csvText.split("\n");
+          const table = document.getElementById(tableId);
+          const tbody = table.querySelector("tbody");
+
+          // Clear existing rows except the first one
+          while (tbody.children.length > 1) {
+            tbody.removeChild(tbody.lastChild);
+          }
+
+          const firstRow = tbody.querySelector("tr");
+
+          rows.forEach((row, index) => {
+            // Skip empty rows
+            if (!row.trim()) return;
+
+            const cells = row.split(",").map((cell) => cell.trim());
+
+            let newRow;
+            if (index === 0) {
+              newRow = firstRow;
+            } else {
+              newRow = firstRow.cloneNode(true);
+              tbody.appendChild(newRow);
+            }
+
+            const inputs = newRow.querySelectorAll("input");
+            cells.forEach((cell, i) => {
+              if (i < inputs.length) {
+                inputs[i].value = cell;
+              }
+            });
+          });
+
+          setupRemoveRowListeners();
+        }
+
+        // Clear table functionality
+        document
+          .getElementById("clear-pumping-table")
+          .addEventListener("click", () => {
+            clearTable("pumping-table");
+          });
+
+        document
+          .getElementById("clear-recovery-table")
+          .addEventListener("click", () => {
+            clearTable("recovery-table");
+          });
+
+        function clearTable(tableId) {
+          const table = document.getElementById(tableId);
+          const tbody = table.querySelector("tbody");
+
+          // Remove all rows except the first one
+          while (tbody.children.length > 1) {
+            tbody.removeChild(tbody.lastChild);
+          }
+
+          // Clear the first row inputs
+          tbody.querySelectorAll("input").forEach((input) => {
+            input.value = "";
+          });
+        }
+
+        // Calculate metrics
+        function calculateMetrics() {
+          const swl =
+            parseFloat(document.getElementById("static-water-level").value) ||
+            0;
+          const pwl =
+            parseFloat(document.getElementById("pumping-water-level").value) ||
+            0;
+          const discharge =
+            parseFloat(document.getElementById("discharge").value) || 0;
+
+          const totalDrawdown = (pwl - swl).toFixed(2);
+          const transmissivity = discharge
+            ? ((1.22 * discharge * 24) / totalDrawdown).toFixed(2)
+            : 0;
+          const specificCapacity = discharge
+            ? ((discharge * 24) / totalDrawdown).toFixed(2)
+            : 0;
+          const safeYield = (discharge * 0.8).toFixed(1);
+
+          document.getElementById(
+            "total-drawdown"
+          ).textContent = `${totalDrawdown} m`;
+          document.getElementById(
+            "transmissivity"
+          ).textContent = `${transmissivity} m²/day`;
+          document.getElementById(
+            "specific-capacity"
+          ).textContent = `${specificCapacity} m²/day`;
+          document.getElementById(
+            "safe-yield"
+          ).textContent = `${safeYield} m³/hr`;
+
+          return { totalDrawdown, transmissivity, specificCapacity, safeYield };
+        }
+
+        // Update metrics when inputs change
+        const metricInputs = [
+          "static-water-level",
+          "pumping-water-level",
+          "discharge",
+        ];
+        metricInputs.forEach((id) => {
+          document
+            .getElementById(id)
+            .addEventListener("input", calculateMetrics);
+        });
+
+        // Generate report
+        document
+          .getElementById("generate-report")
+          .addEventListener("click", generateReport);
+        document
+          .getElementById("print-report")
+          .addEventListener("click", () => {
+            window.print();
+          });
+
+        function generateReport() {
+          // Calculate metrics first
+          const metrics = calculateMetrics();
+
+          // Get all form values
+          const clientName =
+            document.getElementById("client-name").value || "Client Name";
+          const clientAddress =
+            document.getElementById("client-address").value || "Client Address";
+          const clientContact =
+            document.getElementById("client-contact").value || "Client Contact";
+
+          const contractorName =
+            document.getElementById("contractor-name").value ||
+            "Contractor Name";
+          const contractorAddress =
+            document.getElementById("contractor-address").value ||
+            "Contractor Address";
+          const contractorLicense =
+            document.getElementById("contractor-license").value ||
+            "License Number";
+          const contractorSupervisor =
+            document.getElementById("contractor-supervisor").value ||
+            "Supervisor";
+          const contractorContact =
+            document.getElementById("contractor-contact").value ||
+            "Contractor Contact";
+
+          const introductionText =
+            document.getElementById("introduction-text").value ||
+            "Introduction text will appear here.";
+          const scopeText =
+            document.getElementById("scope-text").value ||
+            "Scope details will appear here.";
+          const drillingProcess =
+            document.getElementById("drilling-process").value ||
+            "Drilling process details will appear here.";
+          const constructionText =
+            document.getElementById("construction-text").value ||
+            "Construction details will appear here.";
+          const developmentText =
+            document.getElementById("development-text").value ||
+            "Development details will appear here.";
+          const testPumpingText =
+            document.getElementById("test-pumping-text").value ||
+            "Test pumping details will appear here.";
+
+          const wrmaNotes =
+            document.getElementById("wrma-notes").value ||
+            "No notes provided for WRMA form.";
+
+          const boreholeName =
+            document.getElementById("borehole-name").value || "Borehole Name";
+          const boreholeLocation =
+            document.getElementById("borehole-location").value || "Location";
+          const boreholeCoordinates =
+            document.getElementById("borehole-coordinates").value ||
+            "Coordinates";
+          const boreholeDepth =
+            document.getElementById("borehole-depth").value || "Depth";
+          const holeDiameterTop =
+            document.getElementById("hole-diameter-top").value ||
+            "Top Diameter";
+          const holeDiameterBottom =
+            document.getElementById("hole-diameter-bottom").value ||
+            "Bottom Diameter";
+          const screenSlotSize =
+            document.getElementById("screen-slot-size").value ||
+            "Screen Slot Size";
+          const gravelPackSize =
+            document.getElementById("gravel-pack-size").value ||
+            "Gravel Pack Size";
+          const drillingStart =
+            document.getElementById("drilling-start").value || "Drilling Start";
+          const drillingComplete =
+            document.getElementById("drilling-complete").value ||
+            "Drilling Complete";
+          const workComplete =
+            document.getElementById("work-complete").value || "Work Complete";
+          const firstWater =
+            document.getElementById("first-water").value || "First Water";
+          const mainAquifer =
+            document.getElementById("main-aquifer").value || "Main Aquifer";
+          const waterBearing =
+            document.getElementById("water-bearing").value || "Water Bearing";
+          const waterBearingFrom =
+            document.getElementById("water-bearing-from").value ||
+            "Water Bearing From";
+          const waterBearingTo =
+            document.getElementById("water-bearing-to").value ||
+            "Water Bearing To";
+
+          const staticWaterLevel =
+            document.getElementById("static-water-level").value || "SWL";
+          const pumpingWaterLevel =
+            document.getElementById("pumping-water-level").value || "PWL";
+          const dischargeValue =
+            document.getElementById("discharge").value || "Discharge";
+          const pumpType =
+            document.getElementById("pump-type").value || "Pump Type";
+          const pumpSettingDepth =
+            document.getElementById("pump-setting-depth").value ||
+            "Pump Setting Depth";
+          const testDuration =
+            document.getElementById("test-duration").value || "Test Duration";
+
+          const purposeScope =
+            document.getElementById("purpose-scope").value ||
+            "Purpose and scope will appear here.";
+          const pumpUsed =
+            document.getElementById("pump-used").value || "Pump Used";
+          const cumulativeDrawdown =
+            document.getElementById("cumulative-drawdown").value ||
+            "Cumulative Drawdown";
+          const cumulativePercent =
+            document.getElementById("cumulative-percent").value ||
+            "Cumulative Percent";
+          const rechargeDuration =
+            document.getElementById("recharge-duration").value ||
+            "Recharge Duration";
+          const testDate =
+            document.getElementById("test-date").value || "Test Date";
+          const testDateEnd =
+            document.getElementById("test-date-end").value || "Test Date End";
+
+          const sampleCollected =
+            document.getElementById("sample-collected").value ||
+            "Sample Collected";
+          const collectionDatetime =
+            document.getElementById("collection-datetime").value ||
+            "Collection DateTime";
+          const waterTemperature =
+            document.getElementById("water-temperature").value || "Temperature";
+          const waterColor =
+            document.getElementById("water-color").value || "Color";
+          const waterEC = document.getElementById("water-ec").value || "EC";
+          const waterRemarks =
+            document.getElementById("water-remarks").value || "Water Remarks";
+
+          const recommendations =
+            document.getElementById("recommendations").value ||
+            "Recommendations will appear here.";
+
+          // Get casing data
+          const casingRows = [];
+          document.querySelectorAll("#casing-table tbody tr").forEach((row) => {
+            const from = row.querySelector(".casing-from").value;
+            const to = row.querySelector(".casing-to").value;
+            const material = row.querySelector(".casing-material").value;
+            const type = row.querySelector(".casing-type").value;
+            const remarks = row.querySelector(".casing-remarks").value;
+
+            if (from && to) {
+              casingRows.push({ from, to, material, type, remarks });
+            }
+          });
+
+          // Get pumping test data
+          const pumpingData = [];
+          document
+            .querySelectorAll("#pumping-table tbody tr")
+            .forEach((row) => {
+              const time = row.querySelector(".pumping-time").value;
+              const waterLevel = row.querySelector(
+                ".pumping-water-level"
+              ).value;
+              const drawdown = row.querySelector(".pumping-drawdown").value;
+              const yieldVal = row.querySelector(".pumping-yield").value;
+              const ec = row.querySelector(".pumping-ec").value;
+              const remarks = row.querySelector(".pumping-remarks").value;
+
+              if (time !== "") {
+                pumpingData.push({
+                  time,
+                  waterLevel,
+                  drawdown,
+                  yield: yieldVal,
+                  ec,
+                  remarks,
+                });
+              }
+            });
+
+          // Get recovery data
+          const recoveryData = [];
+          document
+            .querySelectorAll("#recovery-table tbody tr")
+            .forEach((row) => {
+              const time = row.querySelector(".recovery-time").value;
+              const waterLevel = row.querySelector(
+                ".recovery-water-level"
+              ).value;
+              const recovery = row.querySelector(".recovery-recovery").value;
+              const efficiency = row.querySelector(
+                ".recovery-efficiency"
+              ).value;
+              const comment = row.querySelector(".recovery-comment").value;
+
+              if (time !== "") {
+                recoveryData.push({
+                  time,
+                  waterLevel,
+                  recovery,
+                  efficiency,
+                  comment,
+                });
+              }
+            });
+
+          // Generate HTML for the report
+          let reportHTML = `
+                    <div class="report-page">
+                        <div class="report-header-inner">
+                            <h1>BOREHOLE COMPLETION REPORT</h1>
+                            <h2>FOR</h2>
+                            <h2>${clientName}</h2>
+                            <h2>AT</h2>
+                            <h2>${boreholeName}</h2>
+                            <p>${new Date()
+                              .toLocaleDateString("en-US", {
+                                month: "long",
+                                year: "numeric",
+                              })
+                              .toUpperCase()}</p>
+                            <p>COMPILED BY: <span contenteditable="true">Hydrogeologist Name</span></p>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>TABLE OF CONTENTS</h3>
+                            <ol class="toc-list">
+                                <li><a href="#client-details">CLIENT'S DETAILS</a></li>
+                                <li><a href="#contractor-details">CONTRACTOR'S DETAILS</a></li>
+                                <li><a href="#introduction">INTRODUCTION</a></li>
+                                <li><a href="#wrma-form">WATER RESOURCES MANAGEMENT AUTHORITY FORM</a></li>
+                                <li><a href="#borehole-summary">BOREHOLE SUMMARY</a></li>
+                                <li><a href="#hydraulic-parameters">HYDRAULIC PARAMETERS</a></li>
+                                <li><a href="#borehole-parameters">BOREHOLE PARAMETERS</a></li>
+                                <li><a href="#casings-screens">CASINGS & SCREENS</a></li>
+                                <li><a href="#pumping-test">PUMPING TEST DATA</a></li>
+                                <li><a href="#recovery-data">RECOVERY MEASUREMENT</a></li>
+                                <li><a href="#water-quality">WATER QUALITY</a></li>
+                                <li><a href="#recommendations">RECOMMENDATIONS & NOTES</a></li>
+                            </ol>
+                        </div>
+                        
+                        <div class="section" id="client-details">
+                            <h3>CLIENT'S DETAILS</h3>
+                            <p><strong>Name:</strong> ${clientName}</p>
+                            <p><strong>Address:</strong> ${clientAddress}</p>
+                            <p><strong>Contact:</strong> ${clientContact}</p>
+                        </div>
+                        
+                        <div class="section" id="contractor-details">
+                            <h3>CONTRACTOR'S DETAILS</h3>
+                            <p><strong>Name:</strong> ${contractorName}</p>
+                            <p><strong>Address:</strong> ${contractorAddress}</p>
+                            <p><strong>License Number:</strong> ${contractorLicense}</p>
+                            <p><strong>Supervisor:</strong> ${contractorSupervisor}</p>
+                            <p><strong>Contact:</strong> ${contractorContact}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="report-page">
+                        <div class="section" id="introduction">
+                            <h3>1.0 INTRODUCTION</h3>
+                            <p>${introductionText.replace(/\n/g, "<br>")}</p>
+                            
+                            <h4>1.1 Scope of the project</h4>
+                            <p>${scopeText.replace(/\n/g, "<br>")}</p>
+                            
+                            <h4>1.2 Drilling Process and Activities</h4>
+                            <p>${drillingProcess.replace(/\n/g, "<br>")}</p>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>2.0 BOREHOLE CONSTRUCTION AND DEVELOPMENT</h3>
+                            
+                            <h4>2.1 Installation of Casings and Gravel Pack</h4>
+                            <p>${constructionText.replace(/\n/g, "<br>")}</p>
+                            
+                            <h4>2.2 Borehole Cleaning/ Development</h4>
+                            <p>${developmentText.replace(/\n/g, "<br>")}</p>
+                            
+                            <h4>2.3 Test-Pumping</h4>
+                            <p>${testPumpingText.replace(/\n/g, "<br>")}</p>
+                        </div>
+                    </div>
+                    
+                    <div class="report-page">
+                        <div class="section" id="wrma-form">
+                            <h3>WATER RESOURCES MANAGEMENT AUTHORITY FORM</h3>
+                            <p><strong>Note:</strong> The official WRA 009 form should be completed and submitted separately.</p>
+                            <p><strong>User Notes:</strong> ${wrmaNotes.replace(
+                              /\n/g,
+                              "<br>"
+                            )}</p>
+                        </div>
+                        
+                        <div class="section" id="borehole-summary">
+                            <h3>BOREHOLE SUMMARY</h3>
+                            <p><strong>Borehole Name:</strong> ${boreholeName}</p>
+                            <p><strong>Location:</strong> ${boreholeLocation}</p>
+                            <p><strong>Coordinates:</strong> ${boreholeCoordinates}</p>
+                            <p><strong>Depth:</strong> ${boreholeDepth} m</p>
+                            <p><strong>Hole Diameter (Top):</strong> ${holeDiameterTop} mm</p>
+                            <p><strong>Hole Diameter (Bottom):</strong> ${holeDiameterBottom} mm</p>
+                            <p><strong>Screen Slot Size:</strong> ${screenSlotSize}</p>
+                            <p><strong>Gravel Pack Size:</strong> ${gravelPackSize}</p>
+                            
+                            <h4>AQUIFER INFORMATION</h4>
+                            <p><strong>First Water Struck at:</strong> ${firstWater} m</p>
+                            <p><strong>Main Aquifer Struck at:</strong> ${mainAquifer} m</p>
+                            <p><strong>Water Bearing Material:</strong> ${waterBearing} (${waterBearingFrom}m to ${waterBearingTo}m)</p>
+                        </div>
+                    </div>
+                    
+                    <div class="report-page">
+                        <div class="section" id="hydraulic-parameters">
+                            <h3>HYDRAULIC PARAMETERS</h3>
+                            <p><strong>Static Water Level (SWL):</strong> ${staticWaterLevel} m</p>
+                            <p><strong>Pumping Water Level (PWL):</strong> ${pumpingWaterLevel} m</p>
+                            <p><strong>Discharge:</strong> ${dischargeValue} m³/hr</p>
+                            <p><strong>Pump Type:</strong> ${pumpType}</p>
+                            <p><strong>Pump Setting Depth:</strong> ${pumpSettingDepth} m</p>
+                            <p><strong>Test Duration:</strong> ${testDuration} hours</p>
+                        </div>
+                        
+                        <div class="section">
+                            <h3>CALCULATED METRICS</h3>
+                            <div class="metrics-container">
+                                <div class="metric-card">
+                                    <h4>Total Drawdown</h4>
+                                    <div class="metric-value">${
+                                      metrics.totalDrawdown
+                                    } m</div>
+                                </div>
+                                <div class="metric-card">
+                                    <h4>Transmissivity</h4>
+                                    <div class="metric-value">${
+                                      metrics.transmissivity
+                                    } m²/day</div>
+                                </div>
+                                <div class="metric-card">
+                                    <h4>Specific Capacity</h4>
+                                    <div class="metric-value">${
+                                      metrics.specificCapacity
+                                    } m²/day</div>
+                                </div>
+                                <div class="metric-card">
+                                    <h4>Safe Yield</h4>
+                                    <div class="metric-value">${
+                                      metrics.safeYield
+                                    } m³/hr</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="report-page">
+                        <div class="section" id="borehole-parameters">
+                            <h3>3.0 BOREHOLE PARAMETERS</h3>
+                            
+                            <h4>3.1 Purpose and Scope</h4>
+                            <p>${purposeScope.replace(/\n/g, "<br>")}</p>
+                            
+                            <h4>AQUIFER TEST ANALYSIS</h4>
+                            <p><strong>Borehole depth:</strong> ${boreholeDepth} m</p>
+                            <p><strong>Pump type used:</strong> ${pumpUsed}</p>
+                            <p><strong>Pump setting depth:</strong> ${pumpSettingDepth} m</p>
+                            <p><strong>Static water level:</strong> ${staticWaterLevel} m</p>
+                            <p><strong>Pumping water level:</strong> ${pumpingWaterLevel} m</p>
+                            <p><strong>Pumped-dicharge capacity:</strong> ${dischargeValue} m³/hr</p>
+                            <p><strong>Cumulative drawdown:</strong> ${cumulativeDrawdown} m</p>
+                            <p><strong>Cumulative drawdown (%):</strong> ${cumulativePercent}%</p>
+                            <p><strong>Duration for the recharge (minutes):</strong> ${rechargeDuration}</p>
+                            <p><strong>Duration of test:</strong> ${testDuration} hours</p>
+                            <p><strong>Date of test:</strong> ${testDate} to ${testDateEnd}</p>
+                            
+                            <h4>FIELD WORK</h4>
+                            <p>TEST 1</p>
+                        </div>
+                        
+                        <div class="section" id="casings-screens">
+                            <h3>CASINGS & SCREENS</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>From (m)</th>
+                                        <th>To (m)</th>
+                                        <th>Material</th>
+                                        <th>Type</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+
+          casingRows.forEach((row) => {
+            reportHTML += `
+                                    <tr>
+                                        <td>${row.from}</td>
+                                        <td>${row.to}</td>
+                                        <td>${row.material}</td>
+                                        <td>${row.type}</td>
+                                        <td>${row.remarks}</td>
+                                    </tr>
+                    `;
+          });
+
+          reportHTML += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="report-page">
+                        <div class="section" id="pumping-test">
+                            <h3>PUMPING TEST DATA</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Time (min)</th>
+                                        <th>Water Level (m)</th>
+                                        <th>Drawdown (m)</th>
+                                        <th>Yield (m³/h)</th>
+                                        <th>EC (µS/cm)</th>
+                                        <th>Remarks</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+
+          pumpingData.forEach((row) => {
+            reportHTML += `
+                                    <tr>
+                                        <td>${row.time}</td>
+                                        <td>${row.waterLevel}</td>
+                                        <td>${row.drawdown}</td>
+                                        <td>${row.yield}</td>
+                                        <td>${row.ec}</td>
+                                        <td>${row.remarks}</td>
+                                    </tr>
+                    `;
+          });
+
+          reportHTML += `
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="section" id="recovery-data">
+                            <h3>RECOVERY MEASUREMENT</h3>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Time (min)</th>
+                                        <th>Water Level (m)</th>
+                                        <th>Recovery (m)</th>
+                                        <th>Efficiency (%)</th>
+                                        <th>Comment</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                `;
+
+          recoveryData.forEach((row) => {
+            reportHTML += `
+                                    <tr>
+                                        <td>${row.time}</td>
+                                        <td>${row.waterLevel}</td>
+                                        <td>${row.recovery}</td>
+                                        <td>${row.efficiency}</td>
+                                        <td>${row.comment}</td>
+                                    </tr>
+                    `;
+          });
+
+          reportHTML += `
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="report-page">
+                        <div class="section" id="water-quality">
+                            <h3>WATER QUALITY</h3>
+                            <p><strong>Sample Collected:</strong> ${sampleCollected}</p>
+                            <p><strong>Collection Date/Time:</strong> ${collectionDatetime}</p>
+                            <p><strong>Temperature:</strong> ${waterTemperature} °C</p>
+                            <p><strong>Color:</strong> ${waterColor}</p>
+                            <p><strong>EC:</strong> ${waterEC} µS/cm</p>
+                            <p><strong>Remarks:</strong> ${waterRemarks}</p>
+                        </div>
+                        
+                        <div class="section" id="recommendations">
+                            <h3>RECOMMENDATIONS & NOTES</h3>
+                            <p>${recommendations.replace(/\n/g, "<br>")}</p>
+                        </div>
+                        
+                        <div class="section">
+                            <p class="print-only">Report generated on ${new Date().toLocaleDateString()} at ${new Date().toLocaleTimeString()}</p>
+                        </div>
+                    </div>
+                `;
+
+          // Display the report
+          document.getElementById("report-preview").innerHTML = reportHTML;
+          document.getElementById("print-report").disabled = false;
+
+          // Generate charts
+          generateCharts(pumpingData, recoveryData);
+        }
+
+        function generateCharts(pumpingData, recoveryData) {
+          // Water Level vs Time Chart
+          const pumpingCtx = document.createElement("canvas");
+          pumpingCtx.id = "pumping-chart";
+          document
+            .getElementById("report-preview")
+            .querySelectorAll(".report-page")[5]
+            .appendChild(pumpingCtx);
+
+          const pumpingTimes = pumpingData.map((d) => parseInt(d.time));
+          const pumpingLevels = pumpingData.map((d) =>
+            parseFloat(d.waterLevel)
+          );
+
+          new Chart(pumpingCtx, {
+            type: "line",
+            data: {
+              labels: pumpingTimes,
+              datasets: [
+                {
+                  label: "Water Level (m)",
+                  data: pumpingLevels,
+                  borderColor: "#1a4f72",
+                  backgroundColor: "rgba(26, 79, 114, 0.1)",
+                  fill: true,
+                  tension: 0.1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                title: {
+                  display: true,
+                  text: "Water Level vs Time",
+                },
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: "Time (min)",
+                  },
+                },
+                y: {
+                  reverse: true,
+                  title: {
+                    display: true,
+                    text: "Water Level (m)",
+                  },
+                },
+              },
+            },
+          });
+
+          // Residual Drawdown vs Time Chart
+          const recoveryCtx = document.createElement("canvas");
+          recoveryCtx.id = "recovery-chart";
+          document
+            .getElementById("report-preview")
+            .querySelectorAll(".report-page")[5]
+            .appendChild(recoveryCtx);
+
+          const recoveryTimes = recoveryData.map((d) => parseInt(d.time));
+          const recoveryValues = recoveryData.map((d) =>
+            parseFloat(d.recovery)
+          );
+
+          new Chart(recoveryCtx, {
+            type: "line",
+            data: {
+              labels: recoveryTimes,
+              datasets: [
+                {
+                  label: "Residual Drawdown (m)",
+                  data: recoveryValues,
+                  borderColor: "#3a7ca5",
+                  backgroundColor: "rgba(58, 124, 165, 0.1)",
+                  fill: true,
+                  tension: 0.1,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                title: {
+                  display: true,
+                  text: "Residual Drawdown vs Time",
+                },
+              },
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: "Time (min)",
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: "Residual Drawdown (m)",
+                  },
+                },
+              },
+            },
+          });
+        }
+
+        // Reset form
+        document.getElementById("reset-form").addEventListener("click", () => {
+          if (
+            confirm(
+              "Are you sure you want to reset the form? All data will be lost."
+            )
+          ) {
+            document
+              .querySelectorAll("input, textarea, select")
+              .forEach((element) => {
+                if (element.id !== "template-select") {
+                  element.value = "";
+                }
+              });
+
+            clearTable("casing-table");
+            clearTable("pumping-table");
+            clearTable("recovery-table");
+
+            // Add one row to each table
+            document
+              .querySelectorAll("#casing-table tbody tr:first-child input")
+              .forEach((input) => {
+                if (input.classList.contains("casing-from"))
+                  input.value = "0.00";
+                if (input.classList.contains("casing-to"))
+                  input.value = "24.00";
+                if (input.classList.contains("casing-material"))
+                  input.value = "uPVC";
+              });
+
+            document
+              .querySelectorAll("#pumping-table tbody tr:first-child input")
+              .forEach((input) => {
+                if (input.classList.contains("pumping-time")) input.value = "0";
+                if (input.classList.contains("pumping-water-level"))
+                  input.value = "2.00";
+                if (input.classList.contains("pumping-drawdown"))
+                  input.value = "0.00";
+              });
+
+            document
+              .querySelectorAll("#recovery-table tbody tr:first-child input")
+              .forEach((input) => {
+                if (input.classList.contains("recovery-time"))
+                  input.value = "0";
+                if (input.classList.contains("recovery-water-level"))
+                  input.value = "14.66";
+                if (input.classList.contains("recovery-recovery"))
+                  input.value = "0.00";
+              });
+
+            document.getElementById("report-preview").innerHTML =
+              '<p>Fill out the form and click "Generate Report" to see the preview.</p>';
+            document.getElementById("print-report").disabled = true;
+          }
+        });
+
+        // Initialize with some default values for demonstration
+        document.getElementById("client-name").value =
+          "Family Humanitarian Experience–Kenya";
+        document.getElementById("client-address").value =
+          "P.O BOX 2871-50100 KAKAMEGA";
+
+        document.getElementById("contractor-name").value =
+          "BOOKER INVESTMENT GROUP LIMITED";
+        document.getElementById("contractor-address").value =
+          "P.O BOX 2014-40100 KISUMU";
+        document.getElementById("contractor-license").value = "WD/WC/1102";
+        document.getElementById("contractor-supervisor").value =
+          "Hydrogeologist";
+
+        document.getElementById("introduction-text").value =
+          "This report presents the findings of borehole drilling works for Family Humanitarian Experience–Kenya's borehole located in Osira Community in Nyamila, Alego Usonga Sub-County, Siaya County. The project is aimed at supplying water for community use within by the client.";
+
+        document.getElementById("scope-text").value =
+          "The works carried out in this project include:\n• Hydrogeological Survey and Reporting\n• Application and Processing of Water Resources Authority (WRA) Drilling Permit\n• National Environment Management Authority's (NEMA) Environmental Audit and Impact Assessment (E.A.I.A.) and Reporting\n• NEMA Authorization License\n• Borehole drilling\n• Installation of casings and gravel pack\n• Borehole Cleaning (Development)\n• Test-Pumping\n• Water sampling and analysis\n• Preparation of Borehole completion report\n• Construction of Pad/Apron\n• Installation of Hand Pump (Afridev or equivalent)";
+
+        document.getElementById("drilling-process").value =
+          "Mobilization to the site was done on 3rd July, 2025. Borehole drilling commenced on the following day in the presence of the contractor's, the client's and community's representatives. A 203mm diameter borehole was drilled using rotary drilling.\n\nGeological logging was done during drilling after every 2 meters and a lithological description of the encountered strata was done to the bottom of the borehole by the supervising hydrogeologist.\n\nThe drilling was completed on 4th July, 2025 at a terminal depth of 60m bgl.";
+
+        document.getElementById("construction-text").value =
+          "An 8' borehole was successfully drilled to 60m bgl and 160mm outer diameter uPVC casings installed to the final depth. The casings were both blind and slotted depending on the aquifer zones before being installed.\n\nThe 44mm annular space between the borehole wall and the casings was filled by select grade 2-4mm quartz gravel, which acts as filters. The gravel covers the entire space from 0 m to 60m.";
+
+        document.getElementById("development-text").value =
+          "Development was done on 4th July, 2025 using air lifting and air jetting methods prior to test pumping. This was done for 2 hours.";
+
+        document.getElementById("test-pumping-text").value =
+          "The borehole was test pumped constantly for 24-hours in order to characterize and define the optimal pumping capacity of the borehole. This was done between 13th and 14th July, 2025.";
+
+        document.getElementById("purpose-scope").value =
+          "This report documents the test pumping data for Family Humanitarian Experience–Kenya's borehole facility, analyzed to determine the hydraulic parameters, identify the distribution of hydraulic characteristics and to categories the potential of aquifers within the area of study for hydrogeological mapping and planned groundwater modeling.";
+
+        document.getElementById("borehole-name").value =
+          "OSIRA COMMUNITY BOREHOLE";
+        document.getElementById("borehole-location").value =
+          "Osira Community in Nyamila, Alego Usonga Sub-County, Siaya County";
+        document.getElementById("borehole-coordinates").value =
+          "00°7'2.77″N; 34°19'21.532″E";
+        document.getElementById("borehole-depth").value = "60";
+        document.getElementById("hole-diameter-top").value = "279.4";
+        document.getElementById("hole-diameter-bottom").value = "203.2";
+        document.getElementById("screen-slot-size").value = "1.5mm";
+        document.getElementById("gravel-pack-size").value = "2-4mm";
+
+        document.getElementById("sample-collected").value = "Yes";
+
+        // Calculate initial metrics
+        calculateMetrics();
+      });
+    </script>
+  </body>
+</html>
